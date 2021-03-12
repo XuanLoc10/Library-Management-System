@@ -1,0 +1,23 @@
+spring.application.name: web-app
+server:
+  port: 8081
+
+zuul:
+  routes:
+    user-service:
+      path: /user/**
+      stripPrefix: true
+      url: http://localhost:8666/
+      ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
+    book-service:
+      path: /book/**
+      stripPrefix: true
+      url: http://localhost:8077/
+      ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
+  sensitiveHeaders: Cookie,Set-Cookie
+  ignoredPatterns: /error/**, /auth/**, /login, /logout
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

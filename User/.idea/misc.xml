@@ -6,6 +6,7 @@
         <option value="$PROJECT_DIR$/User/pom.xml" />
         <option value="$PROJECT_DIR$/../Eureka/pom.xml" />
         <option value="$PROJECT_DIR$/../Library/Library/pom.xml" />
+        <option value="$PROJECT_DIR$/../WebApp/pom.xml" />
       </list>
     </option>
   </component>

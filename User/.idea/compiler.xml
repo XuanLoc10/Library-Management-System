@@ -6,9 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Eureka" />
         <module name="User" />
         <module name="Library" />
+        <module name="Eureka" />
+        <module name="WebApp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -16,6 +17,9 @@
       <module name="Image" target="11" />
       <module name="Library" target="11" />
       <module name="User" target="11" />
+      <module name="WebApp" target="8" />
+      <module name="webapp (1)" target="8" />
+      <module name="webapp (2)" target="8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -24,6 +28,9 @@
       <module name="Image" options="-parameters" />
       <module name="Library" options="-parameters" />
       <module name="User" options="-parameters" />
+      <module name="WebApp" options="-parameters" />
+      <module name="webapp (1)" options="-parameters" />
+      <module name="webapp (2)" options="-parameters" />
     </option>
   </component>
 </project>

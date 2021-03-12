@@ -1,0 +1,81 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Title</title>
+
+    <style>
+h1 {
+    padding: 5px;
+    margin: 2% 0;
+    text-align: center;
+    color: #0099ff;
+
+}
+.custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5% 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+    }
+.custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+    }
+</style>
+
+</head>
+<body>
+<h1>Library Management System</h1>
+
+<div class="container">
+    <div class="row col-md-6 col-md-offset-2 custyle">
+        <table class="table table-striped custab">
+            <thead>
+            <a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new book</a>
+            <tr>
+                <th>ID</th>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publishing Year</th>
+                <th>Description</th>
+                <th>Status</th>
+
+                <th class="text-center">Action</th>
+            </tr>
+            </thead>
+            <tr>
+                <td>1</td>
+                <td>9781786891686</td>
+                <td>Life Of Pi</td>
+                <td>Yann Martel</td>
+                <td>07-2018</td>
+                <td>One boy, one boat, one tiger . . .<td>
+                <td></td>>
+                <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Products</td>
+                <td>Main Products</td>
+                <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Blogs</td>
+                <td>Parent Blogs</td>
+                <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+</body>
+</html>
