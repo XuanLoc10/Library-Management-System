@@ -1,12 +1,10 @@
 package com.example.Library.models;
 
-import javax.persistence.Column;
 import java.util.Date;
 
 public class Ticket {
     private Long ticketId;
     private Long isbn;
-    private Long adminId;
     private Long borrowerId;
     private Date borrowerDate;
     private Date returnDate;
@@ -25,14 +23,6 @@ public class Ticket {
 
     public void setBorrowerId(Long borrowerId) {
         this.borrowerId = borrowerId;
-    }
-
-    public Long getAdminId() {
-        return adminId;
-    }
-
-    public void setAdminId(Long adminId) {
-        this.adminId = adminId;
     }
 
     public Long getIsbn() {

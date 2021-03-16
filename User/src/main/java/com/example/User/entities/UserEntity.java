@@ -9,9 +9,7 @@ public class UserEntity extends AbstractBaseEntity {
     @Column
     private String password;
     @Column
-    private String firstName;
-    @Column
-    private String lastName;
+    private String fullName;
     @Column
     private String role;
     @Column
@@ -20,7 +18,6 @@ public class UserEntity extends AbstractBaseEntity {
     private String phone;
     @Column
     private String address;
-
     @Column
     private String user;
 
@@ -32,7 +29,6 @@ public class UserEntity extends AbstractBaseEntity {
         this.user = user;
     }
 
-
     public String getPassword() {
         return password;
     }
@@ -41,20 +37,12 @@ public class UserEntity extends AbstractBaseEntity {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getRole() {

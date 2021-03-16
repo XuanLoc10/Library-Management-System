@@ -1,18 +1,16 @@
 package com.example.User.entities;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @MappedSuperclass
 public abstract class AbstractBaseEntity implements Persistable<Long>, Serializable {
-
-    @org.springframework.data.annotation.Id
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public Long getId() {
@@ -25,7 +23,6 @@ public abstract class AbstractBaseEntity implements Persistable<Long>, Serializa
 
     @Override
     @Transient
-    @org.springframework.data.annotation.Transient
     @JsonIgnore
     public boolean isNew() {
         return id == null;

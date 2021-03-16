@@ -9,10 +9,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
 
 @Service
 @Transactional
@@ -24,24 +22,35 @@ public class BookService {
         return StreamSupport
                 .stream(bookRepository.findAll().spliterator(), false)
                 //.map(UserConverter::entity2Model)
-                //Tim cach viet khac
-                //Su dung lamda
                 .map((BookEntity entity) -> BookConverter.entity2Model(entity))
-                //Su dung cach de hieu hon
                 .collect(Collectors.toList());
     }
-/*
-    public Book findById(Long isbn) {
 
-    }
-
-
-
-    public Book save(Book newBook) {
-
-    }
-*/
     public void deleteById(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    public Book findById(Long id) {
+        BookEntity entity = bookRepository.findById(id).get();
+        Book user = BookConverter.entity2Model(entity);
+        return user;
+    }
+
+    public Book add(BookEntity book) {
+        BookEntity bookEntity = bookRepository.findByTitle(book.getTitle());
+        if (bookEntity == null) {
+            bookEntity = bookRepository.save(book);
+            return BookConverter.entity2Model(bookEntity);
+        }
+        return null;
+    }
+
+    public Book save(BookEntity book) {
+        BookEntity bookEntity = bookRepository.findById(book.getId()).get();
+        if (bookEntity != null) {
+            bookEntity = bookRepository.save(book);
+            return BookConverter.entity2Model(bookEntity);
+        }
+        return null;
     }
 }

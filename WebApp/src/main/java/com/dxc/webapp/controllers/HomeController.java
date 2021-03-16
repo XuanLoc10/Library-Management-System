@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 	@GetMapping("/")
 	public String homePage(Model model) {
-		model.addAttribute("appName", "test");
-		return "home";
+		//model.addAttribute("appName", "test");
+		return "HomePage";
 	}
 
 	@GetMapping("/login")
@@ -23,9 +23,8 @@ public class HomeController {
 	public String userInfo(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-			return "admin";
+			return "AdminPage";
 		}
-
 		return "userInfo";
 	}
 

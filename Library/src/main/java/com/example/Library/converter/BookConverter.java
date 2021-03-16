@@ -7,19 +7,12 @@ public class BookConverter {
     public static BookEntity model2Entity(Book b) {
         BookEntity entity = new BookEntity();
         //Su dung phuong thuc set, get AbstractBaseEntity
-
         entity.setId(b.getId());
         entity.setTitle(b.getTitle());
         entity.setAuthor(b.getAuthor());
-        entity.setPublisher(b.getPublisher());
         entity.setPublishingYear(b.getPublishingYear());
-        entity.setDecription(b.getDecription());
-        entity.setUrl(b.getUrl());
+        entity.setDescription(b.getDescription());
         entity.setStatus(b.isStatus());
-        entity.setTypeOfBook(b.getTypeOfBook());
-        //entity.setId(u.getId());
-        //entity.setName(u.getName());
-        //entity.setEmail(u.getEmail());
         return entity;
     }
 
@@ -28,12 +21,9 @@ public class BookConverter {
         u.setId(entity.getId());
         u.setTitle(entity.getTitle());
         u.setAuthor(entity.getAuthor());
-        u.setPublisher(entity.getPublisher());
         u.setPublishingYear(entity.getPublishingYear());
-        u.setDecription(entity.getDecription());
-        u.setUrl(entity.getUrl());
+        u.setDescription(entity.getDescription());
         u.setStatus(entity.isStatus());
-        u.setTypeOfBook(entity.getTypeOfBook());
         return u;
     }
 }

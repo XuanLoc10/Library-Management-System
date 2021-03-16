@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Library Management System</title>
@@ -61,14 +61,14 @@
             }
     </style>
 
-    
+
 </head>
 <body>
 <h1 style="color: #2e5764;">Library Management System</h1>
 
 <p><a class='btn' href="#add" rel="modal:open">+ Add New User</a></p>
 
-<p><a class='btn' href="/">List book</a></p>
+<p><a class='btn' href="/info">List book</a></p>
 <table class="table table-striped custab" border="2" cellspacing="0" cellpadding="5">
     <thead>
 
@@ -128,7 +128,7 @@
 			event.preventDefault();
 
 			var user = $('#user').val();
-			
+
 			$.ajax({
 				url: "http://localhost:8078/user/signup",
 				type: "POST",
@@ -142,7 +142,7 @@
 					$("#msg").html( "<span style='color: red'>User is required</span>" );
 				}
 			});
-			
+
 		});
 
 		$(document).delegate('.delete', 'click', function() {

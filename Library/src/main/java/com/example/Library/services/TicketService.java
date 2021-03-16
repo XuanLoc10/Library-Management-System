@@ -1,6 +1,5 @@
 package com.example.Library.services;
 
-
 import com.example.Library.converter.TicketConverter;
 import com.example.Library.entities.TicketEntity;
 import com.example.Library.models.Ticket;
@@ -19,18 +18,22 @@ public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
-    //Loi khi su dung Book
-    //public Iterable<BookEntity> listAll() {
-    //    return bookRepository.findAll();
-    //}
     public List<Ticket> getAll() {
         return StreamSupport
                 .stream(ticketRepository.findAll().spliterator(), false)
                 //.map(UserConverter::entity2Model)
-                //Tim cach viet khac
-                //Su dung lamda
                 .map((TicketEntity entity) -> TicketConverter.entity2Model(entity))
-                //Su dung cach de hieu hon
                 .collect(Collectors.toList());
     }
+
+    public Ticket findById(Long id) {
+        TicketEntity entity = ticketRepository.findById(id).get();
+        Ticket ticket = TicketConverter.entity2Model(entity);
+        return ticket;
+    }
+
+    /*
+    public void deleteById(Long id) {
+    }
+    */
 }

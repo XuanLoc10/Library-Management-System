@@ -14,8 +14,4 @@ public interface UserApi {
 	@PostMapping(value = "/auth", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	String auth(@RequestBody UserLogin user);
-
-	@PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	String signup(@RequestBody UserLogin user);
 }

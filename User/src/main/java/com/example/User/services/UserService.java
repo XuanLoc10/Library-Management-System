@@ -41,10 +41,10 @@ public class UserService {
 
     public User signup(UserEntity user) {
         UserEntity userEntity = userRepository.findByUser(user.getUser());
-        if (userEntity != null) {
-            userEntity.setPassword(EncrytedPasswordUtils.encrytePassword(userEntity.getPassword()));
-            UserEntity newUserEntity = userRepository.save(userEntity);
-            return UserConverter.entity2Model(newUserEntity);
+        if (userEntity == null) {
+            user.setPassword(EncrytedPasswordUtils.encrytePassword(user.getPassword()));
+            userEntity = userRepository.save(user);
+            return UserConverter.entity2Model(userEntity);
         }
         return null;
     }
@@ -52,7 +52,7 @@ public class UserService {
     //Tim kiem User bang ID
     public User findById(long id) {
         //Chuyen doi UserEntity voi UserModel
-        UserEntity entity = userRepository.findById(id);
+        UserEntity entity = userRepository.findById(id).get();
         User user = UserConverter.entity2Model(entity);
         return user;
     }
@@ -62,9 +62,4 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User save(User newUser) {
-        UserEntity entity = userRepository.save(newUser);
-        User user = UserConverter.entity2Model(entity);
-        return user;
-    }
 }

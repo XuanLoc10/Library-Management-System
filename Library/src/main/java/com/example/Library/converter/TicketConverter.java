@@ -12,7 +12,6 @@ public class TicketConverter {
 
         entity.setId(t.getId());
         entity.setIsbn(t.getIsbn());
-        entity.setAdminId(t.getAdminId());
         entity.setBorrowerId(t.getBorrowerId());
         entity.setBorrowerDate(t.getBorrowerDate());
         entity.setReturnDate(t.getReturnDate());
@@ -23,7 +22,6 @@ public class TicketConverter {
         Ticket t = new Ticket();
         t.setId(entity.getId());
         t.setIsbn(entity.getIsbn());
-        t.setAdminId(entity.getAdminId());
         t.setBorrowerId(entity.getBorrowerId());
         t.setBorrowerDate(entity.getBorrowerDate());
         t.setReturnDate(entity.getReturnDate());

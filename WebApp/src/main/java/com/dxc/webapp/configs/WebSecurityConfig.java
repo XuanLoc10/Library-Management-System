@@ -9,13 +9,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	//	@Autowired
-	//	UserDetailsServiceImpl userDetailsService;
+	//UserDetailsServiceImpl userDetailsService;
 	@Autowired
 	CustomAuthenticationProvider authProvider;
 
@@ -34,17 +38,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-				.csrf().disable()
+				//-------------------------------------
+				.csrf().disable().cors().configurationSource(corsConfigurationSource()).and()
 				.authorizeRequests()
 				.antMatchers("/admin/**").hasRole("ADMIN")
 				.antMatchers("/info/**").hasAnyRole("USER", "ADMIN")
 				.antMatchers("/login*").permitAll()
+				.antMatchers("/user/signup*").permitAll()
+				.antMatchers("/book/add*").permitAll()
 				.anyRequest().authenticated();
 		http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/error");
 
-
 		// Config for Login Form
-
 		http.authorizeRequests().and().formLogin()//
 				// Submit URL of login page.
 				.loginProcessingUrl("/j_spring_security_check") // Submit URL
@@ -56,5 +61,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// Config for Logout Page
 				.and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
 
+	}
+
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:8078/"));
+		configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 }

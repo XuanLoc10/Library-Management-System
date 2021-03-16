@@ -1,40 +1,13 @@
 package com.example.User.models;
 
-//@Entity
 public class User {
-    //@Id
-    //@GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long userId;
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String role;
     private String email;
     private String phone;
     private String address;
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
     private String user;
-    /*public User() {
-    }
-
-    public User(Long userId, String password, String firstName, String lastName, String role, String email, String phone, String address) {
-        this.userId = userId;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-    }
-    */
 
     public Long getId() {
         return userId;
@@ -44,30 +17,12 @@ public class User {
         userId = id;
     }
 
-    /*
-    public Integer getUserId() {
-        return userId;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-    */
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getRole() {
@@ -100,5 +55,13 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }
