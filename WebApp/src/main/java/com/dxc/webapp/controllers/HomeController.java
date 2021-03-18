@@ -9,23 +9,34 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 	@GetMapping("/")
+	public String Page(Model model) {
+		return "library/HomePage";
+	}
+
+
+	@GetMapping("/home")
 	public String homePage(Model model) {
-		//model.addAttribute("appName", "test");
-		return "HomePage";
+		return "library/HomePage";
 	}
 
 	@GetMapping("/login")
 	public String login(Model model) {
-		return "FromLogin";
+		return "login/FromLogin";
 	}
 
-	@GetMapping("/info")
+	@GetMapping("/admin")
 	public String userInfo(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-			return "AdminPage";
+			return "admin/AdminPage";
 		}
-		return "userInfo";
+		return "library/HomePage";
+	}
+
+	@GetMapping("/ticket")
+	public String ticket(Model model) {
+		//model.addAttribute("appName", "test");
+		return "ticket/Ticket";
 	}
 
 	@GetMapping("/403")

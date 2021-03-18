@@ -42,7 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.csrf().disable().cors().configurationSource(corsConfigurationSource()).and()
 				.authorizeRequests()
 				.antMatchers("/admin/**").hasRole("ADMIN")
-				.antMatchers("/info/**").hasAnyRole("USER", "ADMIN")
+				.antMatchers("/home/**").hasAnyRole("USER", "ADMIN")
+				//.antMatchers("/info/**").hasAnyRole("USER", "ADMIN")
 				.antMatchers("/login*").permitAll()
 				.antMatchers("/user/signup*").permitAll()
 				.antMatchers("/book/add*").permitAll()
@@ -54,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// Submit URL of login page.
 				.loginProcessingUrl("/j_spring_security_check") // Submit URL
 				.loginPage("/login")//
-				.defaultSuccessUrl("/info")//
+				.defaultSuccessUrl("/home")//
 				.failureUrl("/login?error=true")//
 				.usernameParameter("user")//
 				.passwordParameter("pass")
@@ -66,10 +67,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("http://localhost:8078/"));
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:8078"));
 		configuration.setAllowedMethods(Arrays.asList("GET","POST"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
+		source.registerCorsConfiguration("/home**", configuration);
 		return source;
 	}
 }
