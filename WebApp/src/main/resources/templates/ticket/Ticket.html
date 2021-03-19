@@ -104,13 +104,13 @@
     <tr>
         <th>TicketID</th>
         <th>ISBN</th>
+        <th>BorrowerID</th>
         <th>Borrow Date</th>
         <th>Return Date</th>
-
         <th class="text-center">Action</th>
     </tr>
     </thead>
-    <tbody id="tbody"></tbody>
+    <tbody id="tbodyTicket"></tbody>
 </table>
 
 <script>
@@ -121,29 +121,25 @@
             tr.push('<tr>');
             tr.push('<td>' + json[i].id + '</td>');
             tr.push('<td>' + json[i].isbn + '</td>');
+            tr.push('<td>' + json[i].borrowerId + '</td>');
             tr.push('<td>' + json[i].borrowerDate + '</td>');
             tr.push('<td>' + json[i].returnDate + '</td>');
-            tr.push('<td><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+            tr.push('<td><button class=\'return\'>Return</button>&nbsp;&nbsp;<button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
             tr.push('</tr>');
             }
-            $('#tbody').append($(tr.join('')));
+            $('#tbodyTicket').append($(tr.join('')));
             var table = $('#tbTicket').DataTable( {
             });
         });
 
-        $(document).delegate('#addNewBook', 'click', function(event) {
-        event.preventDefault();
-
-       
-
-    });
+        
         $(document).delegate('.delete', 'click', function() {
             if (confirm('Do you really want to delete record?')) {
                 var id = $(this).attr('id');
                 var parent = $(this).parent().parent();
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost:8078/book/delete/" + id,
+                    url: "http://localhost:8078/book/deleteTicket/" + id,
                     cache: false,
                     success: function() {
                         parent.fadeOut('slow', function() {
@@ -160,7 +156,6 @@
             }
         });
 });
-
 
 </script>
 </body>

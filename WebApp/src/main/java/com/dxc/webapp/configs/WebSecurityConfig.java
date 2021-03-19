@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -18,7 +17,6 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
 	//UserDetailsServiceImpl userDetailsService;
 	@Autowired
 	CustomAuthenticationProvider authProvider;
@@ -38,7 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-				//-------------------------------------
 				.csrf().disable().cors().configurationSource(corsConfigurationSource()).and()
 				.authorizeRequests()
 				.antMatchers("/admin/**").hasRole("ADMIN")
@@ -61,7 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.passwordParameter("pass")
 				// Config for Logout Page
 				.and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
-
 	}
 
 	@Bean

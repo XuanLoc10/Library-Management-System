@@ -15,8 +15,7 @@
 <style>
 /*
 .modal p { margin: 1em 0; }
-*/
-/*
+
 .add_form.modal {
   border-radius: 0;
   line-height: 18px;
@@ -88,6 +87,9 @@ h1 {
             <li class="nav-item">
                 <a class="nav-link" href="/ticket">Ticket</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Report</a>
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Dropdown
@@ -109,7 +111,7 @@ h1 {
 <!--
 <table id="tbUser" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5">
     -->
-<table id="tbUser" class="table table-striped stripe row-border order-column" cellspacing="3" width="100%">
+<table id="tbUser" class="table table-striped stripe row-border order-column" cellspacing="3" width="90%">
     <thead>
     <tr>
         <th>Id</th>
@@ -122,7 +124,6 @@ h1 {
     </tr>
     </thead>
     <tbody id="tbody">
-
     </tbody>
 </table>
 <form id="add" action="#"  method="post" class="add_form modal" style="display:none;">
@@ -147,9 +148,34 @@ h1 {
         </p>
     </div>
 </form>
+
+<!--/*Edit  User*/-->
+<form id="edit" action="#"  method="post" class="add_form modal" style="display:none;">
+    <div id='msgEdit'>
+        <h3>Edit User</h3>
+        <p> 
+            <label>ID</label>
+            <input type="text" id="user" name="user" value=user.html()>">
+            <label>User</label>
+            <input type='text' id='txtUser' value='" + user.html() + "'/>
+            <label>Password</label>
+            <input type="text" id="password" name="password">
+            <label>Full Name</label>
+            <input type='text' id='txtfullName' value='" + fullName.html() + "'/>
+            <label>E-mail</label>
+            <input type="text" id="email" name="email">
+            <label>Phone</label>
+            <input type="text" id="phone" name="phone">
+            <label>Address</label>
+            <input type="text" id="address" name="address">
+        </p>
+        <p>
+            <input type="submit" id="editUser" value="Submit">
+        </p>
+    </div>
+</form>
 <script>
     $(document).ready(function() {
-
     $.getJSON('http://localhost:8078/user/users', function(json) {
         var tr=[];
         for (var i = 0; i < json.length; i++) {
@@ -160,38 +186,36 @@ h1 {
             tr.push('<td>' + json[i].email + '</td>');
             tr.push('<td>' + json[i].phone + '</td>');
             tr.push('<td>' + json[i].address + '</td>');
-            tr.push('<td><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+            tr.push('<td><button class=\'details\'>Details</button>&nbsp;&nbsp;<button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
             tr.push('</tr>');
         }
         $('#tbody').append($(tr.join('')));
-        
         var table = $('#tbUser').DataTable( {
         });  
     });
     
     $(document).delegate('#addNewUser', 'click', function(event) {
         event.preventDefault();
-
         $.ajax({
             url: "http://localhost:8078/user/signup",
             type: "POST",
-            data: {  user: $('#user').val(),  
-                                    password: $('#password').val(),
-                                    fullName: $('#fullName').val(),
-                                    email: $('#email').val(),
-                                    phone: $('#phone').val(),
-                                    address: $('#address').val()
+            data: { user: $('#user').val(),  
+                    password: $('#password').val(),
+                    fullName: $('#fullName').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    address: $('#address').val(),
+                    role: "USER"
             },
             datatype: "json",
             success: function(result) {
-                $("#msg").html( "<span style='color: green'>Company added successfully</span>" );
+                $("#msg").html( "<span style='color: green'>User added successfully</span>" );
                 window.setTimeout(function(){location.reload()},1000)
             },
             error: function(err) {
-                $("#msg").html( "<span style='color: red'>User is required</span>" );
+                $("#msg").html( "<span style='color: red'>Error</span>" );
             }
         });
-
     });
 
     $(document).delegate('.delete', 'click', function() {
@@ -216,7 +240,7 @@ h1 {
             });
         }
     });
-
+    /*
     $(document).delegate('.edit', 'click', function() {
         var parent = $(this).parent().parent();
 
@@ -236,8 +260,8 @@ h1 {
 
         buttons.html("<button id='save'>Save</button>&nbsp;&nbsp;<button class='Cancel' id='cancel'>Cancel</button>");
     });
+    */
 });
-
 </script>
 </body>
 </html>

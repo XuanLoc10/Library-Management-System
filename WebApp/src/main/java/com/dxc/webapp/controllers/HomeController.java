@@ -13,7 +13,6 @@ public class HomeController {
 		return "library/HomePage";
 	}
 
-
 	@GetMapping("/home")
 	public String homePage(Model model) {
 		return "library/HomePage";
@@ -35,7 +34,6 @@ public class HomeController {
 
 	@GetMapping("/ticket")
 	public String ticket(Model model) {
-		//model.addAttribute("appName", "test");
 		return "ticket/Ticket";
 	}
 
