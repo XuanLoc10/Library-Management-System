@@ -17,7 +17,7 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	//UserDetailsServiceImpl userDetailsService;
+
 	@Autowired
 	CustomAuthenticationProvider authProvider;
 

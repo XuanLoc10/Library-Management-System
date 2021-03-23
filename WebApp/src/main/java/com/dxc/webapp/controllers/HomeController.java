@@ -34,7 +34,7 @@ public class HomeController {
 
 	@GetMapping("/ticket")
 	public String ticket(Model model) {
-		return "ticket/Ticket";
+		return "library/Ticket";
 	}
 
 	@GetMapping("/403")

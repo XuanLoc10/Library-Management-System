@@ -12,15 +12,6 @@
     <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-2.2.4/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.css" />
     <style>
-        /*
-        .modal p { margin: 1em 0; }
-		.add_form.modal {
-		  border-radius: 0;
-		  line-height: 18px;
-		  padding: 0;
-		  font-family: "Lucida Grande", Verdana, sans-serif;
-		}
-        */
 		.add_form.modal p { padding: 20px 30px; border-bottom: 1px solid #ddd; margin: 0;
 		  background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #eee),color-stop(1, #fff));
 		  overflow: hidden;
@@ -109,10 +100,26 @@
     </div>
 </nav>
 
+<nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">All</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#one">ISBN</a>
+              <a class="dropdown-item" href="#one">Title</a>
+              <a class="dropdown-item" href="#two">Author</a>
+              <div role="separator" class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#three">...</a>
+            </div>
+        </div>
+      </div>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </nav>
+
 <p><a class='btn' href="#add" rel="modal:open">+ Add a Book</a></p>
-<!--
-<p><a class='btn' href="#newTicket" rel="modal:open">+ Create Ticket</a></p>
--->
+
 <table id="tbBook" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5" style="width:100%">
     <thead>
     <tr>
@@ -121,13 +128,14 @@
         <th>Author</th>
         <th>Publshing Year</th>
         <th>Description</th>
+        <th>Status</th>
         <th class="text-center">Action</th>
     </tr>
     </thead>
     <tbody id="tbody"></tbody>
 </table>
 
-<form id="add" action="#" method="post" class="add_form modal" style="display:none;">
+<form id="add" method="post" class="add_form modal" style="display:none;">
     <div id='msgBook'>
         <h3>Add a New Book</h3>
         <p>
@@ -146,7 +154,7 @@
     </div>
 </form>
 
-<form id="newTicket" action="#" method="post" class="add_form modal" style="display:none;">
+<form id="newTicket" method="post" class="add_form modal" style="display:none;">
     <div id='msgTicket'>
         <h3>Ticket</h3>
         <p>
@@ -162,7 +170,8 @@
 </form>
 <script>    
         $(document).ready(function() {
-        $.getJSON('http://localhost:8078/book/books', function(json) {
+        $.getJSON('/book/books', function(json) {    
+        //$.getJSON('/book/bookActive', function(json) {
         var tr=[];
         for (var i = 0; i < json.length; i++) {
             tr.push('<tr>');
@@ -171,7 +180,8 @@
             tr.push('<td>' + json[i].author + '</td>');
             tr.push('<td>' + json[i].publishingYear + '</td>');
             tr.push('<td>' + json[i].description + '</td>');
-            tr.push('<td><a class=\'borrow\' id=' + json[i].id + ' href="#newTicket" rel="modal:open">Borrow</a>&nbsp;&nbsp;<button class=\'edit\' id=' + json[i].id + '>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+            tr.push('<td>' + json[i].status + '</td>');
+            tr.push('<td><a class=\'borrow\' id=' + json[i].id + ' href="#newTicket" rel="modal:open"><Button>Borrow</Button></a>&nbsp;&nbsp;<button class=\'edit\' id=' + json[i].id + '>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
             tr.push('</tr>');
             }
             $('#tbody').append($(tr.join('')));
@@ -182,9 +192,9 @@
         $(document).delegate('#addNewBook', 'click', function(event) {
         event.preventDefault();
         $.ajax({
-            url: "http://localhost:8078/book/addBook",
+            url: "/book/addBook",
             type: "POST",
-            data: { title: $('#isbn').val(),
+            data: { title: $('#title').val(),
                     author: $('#author').val(),
                     publishingYear:$('#publishingYear').val(),
                     description: $('#description').val(),
@@ -203,10 +213,10 @@
 
         
         $(document).delegate('#addNewTicket', 'click', function(event) {
+        event.preventDefault();
         $.ajax({
-            url: "http://localhost:8078/book/addTicket",
+            url: "/book/addTicket",
             type: "POST",
-            
             data: { isbn: $("#isbn").val(), 
                     //GET ISBN tu dong chon button Borrow
                     borrowerId: $("#borrowerId").val(),
@@ -230,7 +240,7 @@
             var parent = $(this).parent().parent();
             $.ajax({
                 type: "GET",
-                url: "http://localhost:8078/book/deleteBook/" + id,
+                url: "/book/deleteBook/" + id,
                 cache: false,
                 success: function() {
                     parent.fadeOut('slow', function() {
@@ -246,39 +256,10 @@
             });
         }
     });
-
-
-//});
-    /*
-    $(document).delegate('.borrow', 'click', function() {
-         if (confirm('TEST-Do you really want to borrow book?')) {
-            e.preventDefault();
-            var id = $(this).attr(id);
-            //isbn = id
-    */
-    //         /*
-    //         $.ajax({
-    //             type: "GET",
-    //             //url: "http://localhost:8078/book/deleteBook/" + id,
-    //             cache: false,
-    //             success: function() {
-    //                 parent.fadeOut('slow', function() {
-    //                     $(this).remove();
-    //                 });
-    //                 location.reload(true)
-    //             },
-    //             error: function() {
-    //                 $('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error deleting record').fadeIn().fadeOut(4000, function() {
-    //                     $(this).remove();
-    //                 });
-    //             }
-    //         });
-    //         */
-         //}
-     //});
-
+    
     $(document).delegate('.edit', 'click', function() {
         var parent = $(this).parent().parent();
+
         var id = parent.children("td:nth-child(1)");
         var title = parent.children("td:nth-child(2)");
         var author = parent.children("td:nth-child(3)");
@@ -287,11 +268,54 @@
         var buttons = parent.children("td:nth-child(6)");
 
         title.html("<input type='text' id='txtTitle' value='" + title.html() + "'/>");
-        author.html("<input type='text' id='txtTitle' value='" + author.html() + "'/>");
-        publishingYear.html("<input type='text' id='txtTitle' value='" + publishingYear.html() + "'/>");
-        description.html("<input type='text' id='txtTitle' value='" + description.html() + "'/>");
+        author.html("<input type='text' id='txtAuthor' value='" + author.html() + "'/>");
+        publishingYear.html("<input type='text' id='txtPublishingYear' value='" + publishingYear.html() + "'/>");
+        description.html("<input type='text' id='txtDescription' value='" + description.html() + "'/>");
         buttons.html("<button id='save'>Save</button>&nbsp;&nbsp;<button class='cancel' id='cancel'>Cannel</button>");
     });
+    
+
+    $(document).delegate('#cancel', 'click', function() {
+        //Reload
+        window.setTimeout(function(){location.reload()},1000);
+	});
+
+    $(document).delegate('#save', 'click', function() {
+		var parent = $(this).parent().parent();
+
+		var id = parent.children("td:nth-child(1)");
+		var title = parent.children("td:nth-child(2)");
+        var author = parent.children("td:nth-child(3)");
+        var publishingYear = parent.children("td:nth-child(4)");
+        var description = parent.children("td:nth-child(5)");
+                
+		var buttons = parent.children("td:nth-child(6)");
+
+		$.ajax({
+			type: "POST",
+			url: "/book/saveBook",
+			data: { id : id.html(), 
+                    title : title.children("input[type=text]").val(),
+                    author: author.children("input[type=text]").val(),
+                    publishingYear: publishingYear.children("input[type=text]").val(),
+                    description: description.children("input[type=text]").val()
+                    },
+			datatype: "json",
+			success: function() {
+                title.html(title.children("input[type=text]").val());
+                author.html(author.children("input[type=text]").val());
+                publishingYear.html(publishingYear.children("input[type=text]").val());
+                description.html(description.children("input[type=text]").val());
+						
+                buttons.html("<button class=\'borrow\'>Borrow</button>&nbsp;&nbsp;<button class='edit' id='" + id.html() + "'>Edit</button>&nbsp;&nbsp;<button class='delete' id='" + id.html() + "'>Delete</button>");
+			},
+			error: function() {
+				$('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error updating record').fadeIn().fadeOut(4000, function() {
+					$(this).remove();
+				});
+			}
+		});
+	});
 });
 </script>
 </body>

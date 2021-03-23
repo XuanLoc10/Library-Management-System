@@ -1,13 +1,13 @@
 spring.application.name: web-app
 server:
-  port: 8078
+  port: 8080
 
 zuul:
   routes:
     user-service:
       path: /user/**
       stripPrefix: true
-      url: http://localhost:8666/
+      url: http://localhost:8099/
       ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
     book-service:
       path: /book/**

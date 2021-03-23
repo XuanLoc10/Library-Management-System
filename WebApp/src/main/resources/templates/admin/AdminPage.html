@@ -13,16 +13,6 @@
     <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-2.2.4/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.css" />
 <style>
-/*
-.modal p { margin: 1em 0; }
-
-.add_form.modal {
-  border-radius: 0;
-  line-height: 18px;
-  padding: 0;
-  font-family: "Lucida Grande", Verdana, sans-serif;
-}
-*/
 .add_form.modal p { padding: 20px 30px; border-bottom: 1px solid #ddd; margin: 0;
   background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #eee),color-stop(1, #fff));
   overflow: hidden;
@@ -108,10 +98,7 @@ h1 {
 
 <p><a class='btn' href="#add" rel="modal:open">+ Add New User</a></p>
 
-<!--
-<table id="tbUser" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5">
-    -->
-<table id="tbUser" class="table table-striped stripe row-border order-column" cellspacing="3" width="90%">
+<table id="tbUser" class="table table-striped stripe row-border order-column" cellspacing="3" width="100%">
     <thead>
     <tr>
         <th>Id</th>
@@ -133,7 +120,7 @@ h1 {
             <label>User</label>
             <input type="text" id="user" name="user">
             <label>Password</label>
-            <input type="text" id="password" name="password">
+            <input type="password" id="password" name="password">
             <label>Full Name</label>
             <input type="text" id="fullName" name="fullName">
             <label>E-mail</label>
@@ -149,34 +136,9 @@ h1 {
     </div>
 </form>
 
-<!--/*Edit  User*/-->
-<form id="edit" action="#"  method="post" class="add_form modal" style="display:none;">
-    <div id='msgEdit'>
-        <h3>Edit User</h3>
-        <p> 
-            <label>ID</label>
-            <input type="text" id="user" name="user" value=user.html()>">
-            <label>User</label>
-            <input type='text' id='txtUser' value='" + user.html() + "'/>
-            <label>Password</label>
-            <input type="text" id="password" name="password">
-            <label>Full Name</label>
-            <input type='text' id='txtfullName' value='" + fullName.html() + "'/>
-            <label>E-mail</label>
-            <input type="text" id="email" name="email">
-            <label>Phone</label>
-            <input type="text" id="phone" name="phone">
-            <label>Address</label>
-            <input type="text" id="address" name="address">
-        </p>
-        <p>
-            <input type="submit" id="editUser" value="Submit">
-        </p>
-    </div>
-</form>
 <script>
     $(document).ready(function() {
-    $.getJSON('http://localhost:8078/user/users', function(json) {
+    $.getJSON('/user/users', function(json) {
         var tr=[];
         for (var i = 0; i < json.length; i++) {
             tr.push('<tr>');
@@ -197,7 +159,7 @@ h1 {
     $(document).delegate('#addNewUser', 'click', function(event) {
         event.preventDefault();
         $.ajax({
-            url: "http://localhost:8078/user/signup",
+            url: "/user/signup",
             type: "POST",
             data: { user: $('#user').val(),  
                     password: $('#password').val(),
@@ -205,7 +167,7 @@ h1 {
                     email: $('#email').val(),
                     phone: $('#phone').val(),
                     address: $('#address').val(),
-                    role: "USER"
+                    role:'USER'
             },
             datatype: "json",
             success: function(result) {
@@ -224,7 +186,7 @@ h1 {
             var parent = $(this).parent().parent();
             $.ajax({
                 type: "GET",
-                url: "http://localhost:8078/user/delete/" + id,
+                url: "/user/delete/" + id,
                 cache: false,
                 success: function() {
                     parent.fadeOut('slow', function() {
@@ -240,7 +202,7 @@ h1 {
             });
         }
     });
-    /*
+    
     $(document).delegate('.edit', 'click', function() {
         var parent = $(this).parent().parent();
 
@@ -250,17 +212,64 @@ h1 {
         var email = parent.children("td:nth-child(4)");
         var phone = parent.children("td:nth-child(5)");
         var address = parent.children("td:nth-child(6)");
+
         var buttons = parent.children("td:nth-child(7)");
 
         user.html("<input type='text' id='txtUser' value='" + user.html() + "'/>");
         fullName.html("<input type='text' id='txtfullName' value='" + fullName.html() + "'/>");
         email.html("<input type='text' id='txtEmail' value='" + email.html() + "'/>");
-        phone.html("<input type='text' id='txtEmail' value='" + phone.html() + "'/>");
-        address.html("<input type='text' id='txtEmail' value='" + address.html() + "'/>");
+        phone.html("<input type='text' id='txtPhone' value='" + phone.html() + "'/>");
+        address.html("<input type='text' id='txtAddress' value='" + address.html() + "'/>");
 
         buttons.html("<button id='save'>Save</button>&nbsp;&nbsp;<button class='Cancel' id='cancel'>Cancel</button>");
     });
-    */
+
+    $(document).delegate('#cancel', 'click', function() {
+        //Reload
+        window.setTimeout(function(){location.reload()},1000);
+	});
+
+    $(document).delegate('#save', 'click', function() {
+        var parent = $(this).parent().parent();
+
+        var id = parent.children("td:nth-child(1)");
+        var user = parent.children("td:nth-child(2)");
+        var fullName = parent.children("td:nth-child(3)");
+        var email = parent.children("td:nth-child(4)");
+        var phone = parent.children("td:nth-child(5)");
+        var address = parent.children("td:nth-child(6)");
+
+        var buttons = parent.children("td:nth-child(7)");
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8078/user/saveUser",
+            data: { 
+                    id : id.html(), 
+                    user : user.children("input[type=text]").val(),
+                    fullName: fullName.children("input[type=text]").val(),
+                    email: email.children("input[type=text]").val(),
+                    phone: phone.children("input[type=text]").val(),
+                    address: address.children("input[type=text]").val(),
+                            },
+            datatype: "json",
+            success: function() {
+                user.html(user.children("input[type=text]").val());
+                fullName.html(fullName.children("input[type=text]").val());
+                email.html(email.children("input[type=text]").val());
+                phone.html(phone.children("input[type=text]").val());
+                address.html(address.children("input[type=text]").val());
+                
+                buttons.html("<button class=\'details\'>Details</button>&nbsp;&nbsp;<button class='edit' id='" + id.html() + "'>Edit</button>&nbsp;&nbsp;<button class='delete' id='" + id.html() + "'>Delete</button>");
+            },
+            error: function() {
+                $('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error updating record').fadeIn().fadeOut(4000, function() {
+                    $(this).remove();
+                });
+            }
+        });
+	});
+    
 });
 </script>
 </body>
