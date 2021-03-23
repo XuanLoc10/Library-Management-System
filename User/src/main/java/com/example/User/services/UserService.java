@@ -22,14 +22,10 @@ public class UserService {
         return StreamSupport
                 .stream(userRepository.findAll().spliterator(), false)
                 //.map(UserConverter::entity2Model)
-                //Tim cach viet khac
-                //Su dung lamda
                 .map((UserEntity entity) -> UserConverter.entity2Model(entity))
-                //Su dung cach de hieu hon
                 .collect(Collectors.toList());
     }
 
-    //Kiem tra ma hoa password
     public User auth(UserEntity user) {
         UserEntity userEntity = userRepository.findByUser(user.getUser());
         if (userEntity != null && EncrytedPasswordUtils.isMatched(user.getPassword(), userEntity.getPassword())) {
@@ -49,17 +45,24 @@ public class UserService {
         return null;
     }
 
-    //Tim kiem User bang ID
     public User findById(long id) {
         //Chuyen doi UserEntity voi UserModel
         UserEntity entity = userRepository.findById(id).get();
         User user = UserConverter.entity2Model(entity);
         return user;
     }
-    //Xoa User
-    //Xoa User trong database
+
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public User saveUser(UserEntity user) {
+        UserEntity userEntity = userRepository.findById(user.getId()).get();
+        if (userEntity != null) {
+            userEntity = userRepository.save(user);
+            return UserConverter.entity2Model(userEntity);
+        }
+        return null;
     }
 
 }

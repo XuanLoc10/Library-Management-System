@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Ticket {
     private Long ticketId;
-    private Long isbn;
+    private Book book;
     private Long borrowerId;
     private Date borrowerDate;
     private Date returnDate;
@@ -13,8 +13,24 @@ public class Ticket {
         return ticketId;
     }
 
-    public void setId(Long ticketId) {
+    public void setId(Long id) {
+        this.ticketId = id;
+    }
+
+    public Long getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Long ticketId) {
         this.ticketId = ticketId;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public Long getBorrowerId() {
@@ -23,14 +39,6 @@ public class Ticket {
 
     public void setBorrowerId(Long borrowerId) {
         this.borrowerId = borrowerId;
-    }
-
-    public Long getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(Long isbn) {
-        this.isbn = isbn;
     }
 
     public Date getBorrowerDate() {

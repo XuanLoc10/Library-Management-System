@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-2.2.4/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.css" />
+    <style>
+		.add_form.modal p { padding: 20px 30px; border-bottom: 1px solid #ddd; margin: 0;
+		  background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #eee),color-stop(1, #fff));
+		  overflow: hidden;
+		}
+		.add_form.modal p:last-child { border: none; }
+		.add_form.modal p label { float: left; font-weight: bold; color: #333; font-size: 13px; width: 110px; line-height: 22px; }
+		.add_form.modal p input[type="text"],
+		.add_form.modal p input[type="submit"]		{
+		  font: normal 12px/18px "Lucida Grande", Verdana;
+		  padding: 3px;
+		  border: 1px solid #ddd;
+		  width: 200px;
+		}
+		#msgBook {
+		  margin: 10px;
+		  padding: 30px;
+		  color: #fff;
+		  font-size: 18px;
+		  font-weight: bold;
+		  background: -moz-linear-gradient(top, #2e5764, #1e3d47);
+		  background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #1e3d47),color-stop(1, #2e5764));
+		}
+		#msgTicket {
+		  margin: 10px;
+		  padding: 30px;
+		  color: #fff;
+		  font-size: 18px;
+		  font-weight: bold;
+		  background: -moz-linear-gradient(top, #2e5764, #1e3d47);
+		  background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #1e3d47),color-stop(1, #2e5764));
+		}
+		h1 {
+			padding: 5px;
+			margin: 2% 0;
+			text-align: center;
+			color: #0099ff;
+
+		}
+		.custab{
+			border: 1px solid #ccc;
+			padding: 5px;
+			margin: 5% 0;
+			box-shadow: 3px 3px 2px #ccc;
+			transition: 0.5s;
+			}
+		.custab:hover{
+			box-shadow: 3px 3px 0px transparent;
+			transition: 0.5s;
+			}
+    </style>
+</head>
+<body>
+
+<h1 style="color:  #2e5764;">Library Management System</h1>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">LMS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/home">Book<span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ticket">Ticket</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin">Admin</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">All</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#one">ISBN</a>
+              <a class="dropdown-item" href="#one">Title</a>
+              <a class="dropdown-item" href="#two">Author</a>
+              <div role="separator" class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#three">...</a>
+            </div>
+        </div>
+      </div>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </nav>
+
+<p><a class='btn' href="#add" rel="modal:open">+ Add a Book</a></p>
+
+<table id="tbBook" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5" style="width:100%">
+    <thead>
+    <tr>
+        <th>ISBN</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Publshing Year</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th class="text-center">Action</th>
+    </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+</table>
+
+<form id="add" method="post" class="add_form modal" style="display:none;">
+    <div id='msgBook'>
+        <h3>Add a New Book</h3>
+        <p>
+            <label>Title</label>
+            <input type="text" id="title" name="title">
+            <label>Author</label>
+            <input type="text" id="author" name="author">
+            <label>Publish Year</label>
+            <input type="text" id="publishingYear" name="publishingYear">
+            <label>Description</label>
+            <input type="text" id="description" name="description">
+        </p>
+        <p>
+            <input type="submit" id="addNewBook" value="Submit">
+        </p>
+    </div>
+</form>
+
+<form id="newTicket" method="post" class="add_form modal" style="display:none;">
+    <div id='msgTicket'>
+        <h3>Ticket</h3>
+        <p>
+            <label>ISBN</label>
+            <input type="text" id="isbn" name="isbn">
+            <label>BorrowerID</label>
+            <input type="text" id="borrowerId" name="borrowerId">
+        </p>
+        <p>
+            <input type="submit" id="addNewTicket" value="Submit">
+        </p>
+    </div>
+</form>
+<script>    
+        $(document).ready(function() {
+        $.getJSON('/book/books', function(json) {    
+        //$.getJSON('/book/bookActive', function(json) {
+        var tr=[];
+        for (var i = 0; i < json.length; i++) {
+            tr.push('<tr>');
+            tr.push('<td>' + json[i].id + '</td>');
+            tr.push('<td>' + json[i].title + '</td>');
+            tr.push('<td>' + json[i].author + '</td>');
+            tr.push('<td>' + json[i].publishingYear + '</td>');
+            tr.push('<td>' + json[i].description + '</td>');
+            tr.push('<td>' + json[i].status + '</td>');
+            tr.push('<td><a class=\'borrow\' id=' + json[i].id + ' href="#newTicket" rel="modal:open"><Button>Borrow</Button></a>&nbsp;&nbsp;<button class=\'edit\' id=' + json[i].id + '>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+            tr.push('</tr>');
+            }
+            $('#tbody').append($(tr.join('')));
+            var table = $('#tbBook').DataTable( {
+            });  
+        });
+
+        $(document).delegate('#addNewBook', 'click', function(event) {
+        event.preventDefault();
+        $.ajax({
+            url: "/book/addBook",
+            type: "POST",
+            data: { title: $('#title').val(),
+                    author: $('#author').val(),
+                    publishingYear:$('#publishingYear').val(),
+                    description: $('#description').val(),
+                    status: 1
+                },
+            datatype: "json",
+            success: function(result) {
+                $("#msgBook").html( "<span style='color: green'>Book added successfully</span>" );
+                window.setTimeout(function(){location.reload()},1000)
+            },
+            error: function(err) {
+                $("#msgBook").html( "<span style='color: red'>Error</span>" );
+            }
+        });
+        });
+
+        
+        $(document).delegate('#addNewTicket', 'click', function(event) {
+        event.preventDefault();
+        $.ajax({
+            url: "/book/addTicket",
+            type: "POST",
+            data: { book: $("#isbn").val(), 
+                    //GET ISBN tu dong chon button Borrow
+                    borrowerId: $("#borrowerId").val(),
+                    //GET USER Login session
+                    borrowerDate: new Date()
+                    },
+            datatype: "json",
+            success: function(result) {
+                $("#msgTicket").html( "<span style='color: green'>Ticket added successfully</span>" );
+                window.setTimeout(function(){location.reload()},1000)
+            },
+            error: function(err) {
+                $("#msgTicket").html( "<span style='color: red'>Error</span>" );
+            }
+        });
+    });
+    
+    $(document).delegate('.delete', 'click', function() {
+        if (confirm('Do you really want to delete record?')) {
+            var id = $(this).attr('id');
+            var parent = $(this).parent().parent();
+            $.ajax({
+                type: "GET",
+                url: "/book/deleteBook/" + id,
+                cache: false,
+                success: function() {
+                    parent.fadeOut('slow', function() {
+                        $(this).remove();
+                    });
+                    location.reload(true)
+                },
+                error: function() {
+                    $('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error deleting record').fadeIn().fadeOut(4000, function() {
+                        $(this).remove();
+                    });
+                }
+            });
+        }
+    });
+    
+    $(document).delegate('.edit', 'click', function() {
+        var parent = $(this).parent().parent();
+
+        var id = parent.children("td:nth-child(1)");
+        var title = parent.children("td:nth-child(2)");
+        var author = parent.children("td:nth-child(3)");
+        var publishingYear = parent.children("td:nth-child(4)");
+        var description = parent.children("td:nth-child(5)");
+        var buttons = parent.children("td:nth-child(6)");
+
+        title.html("<input type='text' id='txtTitle' value='" + title.html() + "'/>");
+        author.html("<input type='text' id='txtAuthor' value='" + author.html() + "'/>");
+        publishingYear.html("<input type='text' id='txtPublishingYear' value='" + publishingYear.html() + "'/>");
+        description.html("<input type='text' id='txtDescription' value='" + description.html() + "'/>");
+        buttons.html("<button id='save'>Save</button>&nbsp;&nbsp;<button class='cancel' id='cancel'>Cannel</button>");
+    });
+    
+
+    $(document).delegate('#cancel', 'click', function() {
+        //Reload
+        window.setTimeout(function(){location.reload()},1000);
+	});
+
+    $(document).delegate('#save', 'click', function() {
+		var parent = $(this).parent().parent();
+
+		var id = parent.children("td:nth-child(1)");
+		var title = parent.children("td:nth-child(2)");
+        var author = parent.children("td:nth-child(3)");
+        var publishingYear = parent.children("td:nth-child(4)");
+        var description = parent.children("td:nth-child(5)");
+                
+		var buttons = parent.children("td:nth-child(6)");
+
+		$.ajax({
+			type: "POST",
+			url: "/book/saveBook",
+			data: { id : id.html(), 
+                    title : title.children("input[type=text]").val(),
+                    author: author.children("input[type=text]").val(),
+                    publishingYear: publishingYear.children("input[type=text]").val(),
+                    description: description.children("input[type=text]").val()
+                    },
+			datatype: "json",
+			success: function() {
+                title.html(title.children("input[type=text]").val());
+                author.html(author.children("input[type=text]").val());
+                publishingYear.html(publishingYear.children("input[type=text]").val());
+                description.html(description.children("input[type=text]").val());
+						
+                buttons.html("<button class=\'borrow\'>Borrow</button>&nbsp;&nbsp;<button class='edit' id='" + id.html() + "'>Edit</button>&nbsp;&nbsp;<button class='delete' id='" + id.html() + "'>Delete</button>");
+			},
+			error: function() {
+				$('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error updating record').fadeIn().fadeOut(4000, function() {
+					$(this).remove();
+				});
+			}
+		});
+	});
+});
+</script>
+</body>
+</html>

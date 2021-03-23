@@ -20,7 +20,6 @@ public abstract class AbstractBaseEntity implements Persistable<Long>, Serializa
     public void setId(Long id) {
         this.id = id;
     }
-
     @Override
     @Transient
     @JsonIgnore

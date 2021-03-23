@@ -14,9 +14,7 @@ import org.springframework.cloud.openfeign.*;
 
 @EnableFeignClients
 public class LibraryApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryApplication.class, args);
 	}
-
 }

@@ -6,7 +6,6 @@ import com.example.Library.models.Book;
 public class BookConverter {
     public static BookEntity model2Entity(Book b) {
         BookEntity entity = new BookEntity();
-        //Su dung phuong thuc set, get AbstractBaseEntity
         entity.setId(b.getId());
         entity.setTitle(b.getTitle());
         entity.setAuthor(b.getAuthor());
@@ -17,6 +16,8 @@ public class BookConverter {
     }
 
     public static Book entity2Model(BookEntity entity) {
+        if (entity == null)
+            return null;
         Book u = new Book();
         u.setId(entity.getId());
         u.setTitle(entity.getTitle());

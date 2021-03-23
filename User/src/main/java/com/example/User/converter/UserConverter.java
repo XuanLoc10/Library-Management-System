@@ -6,7 +6,6 @@ import com.example.User.models.User;
 public class UserConverter {
     public static UserEntity model2Entity(User u) {
         UserEntity entity = new UserEntity();
-        //Su dung phuong thuc set, get AbstractBaseEntity
         entity.setId(u.getId());
         entity.setFullName(u.getFullName());
         entity.setRole(u.getRole());

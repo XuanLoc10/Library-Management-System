@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-2.2.4/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.css" />
+    <style>
+		.add_form.modal p { padding: 20px 30px; border-bottom: 1px solid #ddd; margin: 0;
+		  background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #eee),color-stop(1, #fff));
+		  overflow: hidden;
+		}
+		.add_form.modal p:last-child { border: none; }
+		.add_form.modal p label { float: left; font-weight: bold; color: #333; font-size: 13px; width: 110px; line-height: 22px; }
+		.add_form.modal p input[type="text"],
+		.add_form.modal p input[type="submit"]		{
+		  font: normal 12px/18px "Lucida Grande", Verdana;
+		  padding: 3px;
+		  border: 1px solid #ddd;
+		  width: 200px;
+		}
+		#msgBook {
+		  margin: 10px;
+		  padding: 30px;
+		  color: #fff;
+		  font-size: 18px;
+		  font-weight: bold;
+		  background: -moz-linear-gradient(top, #2e5764, #1e3d47);
+		  background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #1e3d47),color-stop(1, #2e5764));
+		}
+		#msgTicket {
+		  margin: 10px;
+		  padding: 30px;
+		  color: #fff;
+		  font-size: 18px;
+		  font-weight: bold;
+		  background: -moz-linear-gradient(top, #2e5764, #1e3d47);
+		  background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #1e3d47),color-stop(1, #2e5764));
+		}
+		h1 {
+			padding: 5px;
+			margin: 2% 0;
+			text-align: center;
+			color: #0099ff;
+
+		}
+		.custab{
+			border: 1px solid #ccc;
+			padding: 5px;
+			margin: 5% 0;
+			box-shadow: 3px 3px 2px #ccc;
+			transition: 0.5s;
+			}
+		.custab:hover{
+			box-shadow: 3px 3px 0px transparent;
+			transition: 0.5s;
+			}
+    </style>
+</head>
+<body>
+
+<h1 style="color:  #2e5764;">Library Management System</h1>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">LMS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/ticket">Ticket<span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home">Book</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<table id="tbTicket" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5">
+    <thead>
+    <tr>
+        <th>TicketID</th>
+        <th>ISBN</th>
+        <th>Title</th>
+        <th>BorrowerID</th>
+        <th>Borrow Date</th>
+        <th>Return Date</th>
+        <th class="text-center">Action</th>
+    </tr>
+    </thead>
+    <tbody id="tbodyTicket"></tbody>
+</table>
+
+<script>
+$(document).ready(function() {
+    $.getJSON('/book/tickets', function(json) {
+    var tr=[];
+    for (var i = 0; i < json.length; i++) {
+        tr.push('<tr>');
+        tr.push('<td>' + json[i].id + '</td>');
+        tr.push('<td>' + json[i].book.id + '</td>');
+        tr.push('<td>' + json[i].book.title + '</td>');
+        tr.push('<td>' + json[i].borrowerId + '</td>');
+        tr.push('<td>' + json[i].borrowerDate + '</td>');
+        tr.push('<td>' + json[i].returnDate + '</td>');
+        tr.push('<td><button class=\'return\' id=' + json[i].id + '>Return</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+        tr.push('</tr>');
+        }
+
+        $('#tbodyTicket').append($(tr.join('')));
+        var table = $('#tbTicket').DataTable( {
+        });
+    });
+        
+    $(document).delegate('.delete', 'click', function() {
+        if (confirm('Do you really want to delete record?')) {
+            var id = $(this).attr('id');
+            var parent = $(this).parent().parent();
+            $.ajax({
+                type: "GET",
+                url: "/book/deleteTicket/" + id,
+                cache: false,
+                success: function() {
+                    parent.fadeOut('slow', function() {
+                        $(this).remove();
+                    });
+                    location.reload(true)
+                },
+                error: function() {
+                    $('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error deleting record').fadeIn().fadeOut(4000, function() {
+                        $(this).remove();
+                    });
+                }
+            });
+        }
+    });
+    
+    $(document).delegate('.return', 'click', function() {
+        var parent = $(this).parent().parent();
+
+        var id = parent.children("td:nth-child(1)");
+        var isbn = parent.children("td:nth-child(2)");
+        var borrowerId = parent.children("td:nth-child(3)");
+        var borrowerDate = parent.children("td:nth-child(4)");
+
+        var buttons = parent.children("td:nth-child(6)");
+        
+        isbn.html("<input type='text' id='txtISBN' value='" + isbn.html() + "' disabled/>")
+        borrowerId.html("<input type='text' id='txtBorrowerId' value='" + borrowerId.html() + "'disabled/>");
+        borrowerDate.html("<input type='text' id='txtBorrowerDate' value='" + borrowerDate.html() + "'disabled/>");
+
+        buttons.html("<button id='save'>Confirm</button>&nbsp;&nbsp;<button class='cancel' id='cancel'>Cannel</button>");
+    });
+    
+    $(document).delegate('#cancel', 'click', function() {
+        window.setTimeout(function(){location.reload()},1000);
+	});
+
+    $(document).delegate('#save', 'click', function() {
+        var parent = $(this).parent().parent();
+
+        var id = parent.children("td:nth-child(1)");
+        var isbn = parent.children("td:nth-child(2)");
+        var borrowerId = parent.children("td:nth-child(3)");
+        var borrowerDate = parent.children("td:nth-child(4)");
+        var returnDate = parent.children("td:nth-child(5)");
+
+        var buttons = parent.children("td:nth-child(6)");
+
+        $.ajax({
+            type: "POST",
+            url: "/book/saveTicket",
+            data: { 
+                    id : id.html(), 
+                    isbn : isbn.children("input[type=text]").val(),
+                    borrowerId: borrowerId.children("input[type=text]").val(),
+                    //-------------------------------//
+                    //borrowerDate: borrowerDate.children("input[type=text]").Date(),
+                    borrowerDate: new Date(),
+                    returnDate: new Date()
+                            },
+            datatype: "json",
+            success: function() {
+                isbn.html(isbn.children("input[type=text]").val());
+                borrowerId.html(borrowerId.children("input[type=text]").val());
+                borrowerDate.html(borrowerDate.children("input[type=text]").val());
+                returnDate.html(returnDate.children("input[type=text]").val());
+                
+                window.setTimeout(function(){location.reload()},1000);
+            },
+            error: function() {
+                $('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error updating record').fadeIn().fadeOut(4000, function() {
+                    $(this).remove();
+                });
+            }
+        });
+	});
+});
+
+</script>
+</body>
+</html>

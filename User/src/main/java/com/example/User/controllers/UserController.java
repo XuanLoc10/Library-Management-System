@@ -49,4 +49,9 @@ public class UserController {
     public void deleteUser(@PathVariable Long id) {
         userService.deleteById(id);
     }
+
+    @PostMapping(value = "/saveUser", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public @ResponseBody User saveUser(UserEntity user) {
+        return userService.saveUser(user);
+    }
 }

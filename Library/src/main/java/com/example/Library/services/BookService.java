@@ -36,7 +36,7 @@ public class BookService {
         return user;
     }
 
-    public Book add(BookEntity book) {
+    public Book addBook(BookEntity book) {
         BookEntity bookEntity = bookRepository.findByTitle(book.getTitle());
         if (bookEntity == null) {
             bookEntity = bookRepository.save(book);
@@ -45,12 +45,21 @@ public class BookService {
         return null;
     }
 
-    public Book save(BookEntity book) {
+    public Book saveBook(BookEntity book) {
         BookEntity bookEntity = bookRepository.findById(book.getId()).get();
         if (bookEntity != null) {
             bookEntity = bookRepository.save(book);
             return BookConverter.entity2Model(bookEntity);
         }
         return null;
+    }
+
+    @Transactional
+    public List<Book> getActive() {
+        return StreamSupport
+                .stream(bookRepository.findByActive().spliterator(), false)
+                //.map(BookConverter::entity2Model)
+                .map((BookEntity entity) -> BookConverter.entity2Model(entity))
+                .collect(Collectors.toList());
     }
 }

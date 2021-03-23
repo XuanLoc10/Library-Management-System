@@ -32,8 +32,25 @@ public class TicketService {
         return ticket;
     }
 
-    /*
-    public void deleteById(Long id) {
+    public Ticket addTicket(TicketEntity ticket) {
+        TicketEntity ticketEntity = ticketRepository.findById(ticket.getId()).get();
+        if (ticketEntity == null) {
+            ticketEntity = ticketRepository.save(ticket);
+            return TicketConverter.entity2Model(ticketEntity);
+        }
+        return null;
     }
-    */
+
+    public void deleteById(Long id) {
+        ticketRepository.deleteById(id);
+    }
+
+    public Ticket saveTicket(TicketEntity ticket) {
+        TicketEntity ticketEntity = ticketRepository.findById(ticket.getId()).get();
+        if (ticketEntity != null) {
+            ticketEntity = ticketRepository.save(ticket);
+            return TicketConverter.entity2Model(ticketEntity);
+        }
+        return null;
+    }
 }

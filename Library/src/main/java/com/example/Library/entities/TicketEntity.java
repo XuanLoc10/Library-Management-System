@@ -6,10 +6,9 @@ import java.util.Date;
 @Entity
 @Table(name = "ticket")
 public class TicketEntity extends AbstractBaseEntity {
-    //Cac column isbn la khoa ngoai cua table book
-    //Cac column borrowerId la khoa ngoai cua table user
-    @Column
-    private Long isbn;
+    @OneToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="id")
+    private BookEntity book;
     @Column
     private Long borrowerId;
     @Column
@@ -17,20 +16,20 @@ public class TicketEntity extends AbstractBaseEntity {
     @Column
     private Date returnDate;
 
+    public BookEntity getBook() {
+        return book;
+    }
+
+    public void setBook(BookEntity book) {
+        this.book = book;
+    }
+
     public Long getBorrowerId() {
         return borrowerId;
     }
 
     public void setBorrowerId(Long borrowerId) {
         this.borrowerId = borrowerId;
-    }
-
-    public Long getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(Long isbn) {
-        this.isbn = isbn;
     }
 
     public Date getBorrowerDate() {
