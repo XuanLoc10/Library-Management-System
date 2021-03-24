@@ -99,7 +99,7 @@
         </ul>
     </div>
 </nav>
-
+<!-- SEARCH
 <nav class="navbar navbar-light bg-light">
     <form class="form-inline">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -117,7 +117,7 @@
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
   </nav>
-
+-->
 <p><a class='btn' href="#add" rel="modal:open">+ Add a Book</a></p>
 
 <table id="tbBook" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5" style="width:100%">
@@ -128,7 +128,6 @@
         <th>Author</th>
         <th>Publshing Year</th>
         <th>Description</th>
-        <th>Status</th>
         <th class="text-center">Action</th>
     </tr>
     </thead>
@@ -164,7 +163,7 @@
             <input type="text" id="borrowerId" name="borrowerId">
         </p>
         <p>
-            <input type="submit" id="addNewTicket" value="Submit">
+            <button id="addNewTicket" value="Submit">Submit</button>
         </p>
     </div>
 </form>
@@ -180,7 +179,6 @@
             tr.push('<td>' + json[i].author + '</td>');
             tr.push('<td>' + json[i].publishingYear + '</td>');
             tr.push('<td>' + json[i].description + '</td>');
-            tr.push('<td>' + json[i].status + '</td>');
             tr.push('<td><a class=\'borrow\' id=' + json[i].id + ' href="#newTicket" rel="modal:open"><Button>Borrow</Button></a>&nbsp;&nbsp;<button class=\'edit\' id=' + json[i].id + '>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
             tr.push('</tr>');
             }
@@ -211,18 +209,19 @@
         });
         });
 
-        
         $(document).delegate('#addNewTicket', 'click', function(event) {
         event.preventDefault();
         $.ajax({
             url: "/book/addTicket",
             type: "POST",
-            data: { book: $("#isbn").val(), 
-                    //GET ISBN tu dong chon button Borrow
-                    borrowerId: $("#borrowerId").val(),
-                    //GET USER Login session
-                    borrowerDate: new Date()
+            data: {
+
+                book:{
+                    id: $("#isbn").val(),
                     },
+                borrowerId: $("#borrowerId").val(),
+                borrowerDate: new Date()
+            },
             datatype: "json",
             success: function(result) {
                 $("#msgTicket").html( "<span style='color: green'>Ticket added successfully</span>" );
@@ -274,9 +273,7 @@
         buttons.html("<button id='save'>Save</button>&nbsp;&nbsp;<button class='cancel' id='cancel'>Cannel</button>");
     });
     
-
     $(document).delegate('#cancel', 'click', function() {
-        //Reload
         window.setTimeout(function(){location.reload()},1000);
 	});
 

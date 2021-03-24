@@ -34,7 +34,7 @@ public class TicketService {
 
     public Ticket addTicket(TicketEntity ticket) {
         TicketEntity ticketEntity = ticketRepository.findById(ticket.getId()).get();
-        if (ticketEntity == null) {
+        if (ticketEntity != null) {
             ticketEntity = ticketRepository.save(ticket);
             return TicketConverter.entity2Model(ticketEntity);
         }

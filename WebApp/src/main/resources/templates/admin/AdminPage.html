@@ -225,7 +225,6 @@ h1 {
     });
 
     $(document).delegate('#cancel', 'click', function() {
-        //Reload
         window.setTimeout(function(){location.reload()},1000);
 	});
 
@@ -243,7 +242,7 @@ h1 {
 
         $.ajax({
             type: "POST",
-            url: "http://localhost:8078/user/saveUser",
+            url: "/user/saveUser",
             data: { 
                     id : id.html(), 
                     user : user.children("input[type=text]").val(),
@@ -269,7 +268,6 @@ h1 {
             }
         });
 	});
-    
 });
 </script>
 </body>

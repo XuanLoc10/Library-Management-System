@@ -7,7 +7,7 @@ import java.util.Date;
 @Table(name = "ticket")
 public class TicketEntity extends AbstractBaseEntity {
     @OneToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="id")
+    @JoinColumn(name="book_id")
     private BookEntity book;
     @Column
     private Long borrowerId;
