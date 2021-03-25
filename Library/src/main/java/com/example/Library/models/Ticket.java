@@ -5,15 +5,6 @@ import java.util.Date;
 public class Ticket {
     private Long ticketId;
     private Book book;
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
     private Long borrowerId;
     private Date borrowerDate;
     private Date returnDate;
@@ -24,6 +15,14 @@ public class Ticket {
 
     public void setId(Long id) {
         this.ticketId = id;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public Long getBorrowerId() {
@@ -49,5 +48,4 @@ public class Ticket {
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
-
 }

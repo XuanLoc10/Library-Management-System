@@ -1,8 +1,11 @@
 package com.example.Library.services;
 
 import com.example.Library.converter.TicketConverter;
+import com.example.Library.entities.BookEntity;
 import com.example.Library.entities.TicketEntity;
+import com.example.Library.models.FormTicket;
 import com.example.Library.models.Ticket;
+import com.example.Library.repositories.BookRepository;
 import com.example.Library.repositories.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import java.util.stream.StreamSupport;
 public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
+    @Autowired
+    private BookRepository bookRepository;
 
     public List<Ticket> getAll() {
         return StreamSupport
@@ -32,10 +37,20 @@ public class TicketService {
         return ticket;
     }
 
-    public Ticket addTicket(TicketEntity ticket) {
-        TicketEntity ticketEntity = ticketRepository.findById(ticket.getId()).get();
-        if (ticketEntity != null) {
-            ticketEntity = ticketRepository.save(ticket);
+    public Ticket addTicket(FormTicket ticket) {
+        //TicketEntity ticketEntity = ticketRepository.findById(ticket.getId()).get();
+        TicketEntity ticketEntity = new TicketEntity();
+        BookEntity bookEntity = bookRepository.findById(ticket.getBookId()).get();
+
+        bookEntity.setId(ticket.getBookId());
+        if ( bookEntity != null && bookEntity.isStatus()) {
+            ticketEntity.setBook(bookEntity);
+            ticketEntity.setBorrowerId(ticket.getBorrowerId());
+            ticketEntity.setBorrowerDate(ticket.getBorrowerDate());
+            ticketEntity.setReturnDate(ticket.getReturnDate());
+            ticketEntity = ticketRepository.save(ticketEntity);
+            bookEntity.setStatus(false);
+            bookRepository.save(bookEntity);
             return TicketConverter.entity2Model(ticketEntity);
         }
         return null;

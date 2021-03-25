@@ -50,6 +50,11 @@ public class UserController {
         userService.deleteById(id);
     }
 
+    @GetMapping("/{user}")
+    public User findByUser(@PathVariable String user) {
+        return userService.findByUser(user);
+    }
+
     @PostMapping(value = "/saveUser", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody User saveUser(UserEntity user) {
         return userService.saveUser(user);

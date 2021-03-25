@@ -52,6 +52,12 @@ public class UserService {
         return user;
     }
 
+    public User findByUser(String user) {
+        //Chuyen doi UserEntity voi UserModel
+        UserEntity entity = userRepository.findByUser(user);
+        return UserConverter.entity2Model(entity);
+    }
+
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }

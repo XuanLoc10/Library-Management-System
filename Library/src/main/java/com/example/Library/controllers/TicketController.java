@@ -2,6 +2,7 @@ package com.example.Library.controllers;
 
 import com.example.Library.API.UserApi;
 import com.example.Library.entities.TicketEntity;
+import com.example.Library.models.FormTicket;
 import com.example.Library.models.Ticket;
 import com.example.Library.services.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class TicketController {
     }
 
     @PostMapping(value = "/addTicket", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public @ResponseBody Ticket addTicket(TicketEntity ticket) {
+    public @ResponseBody Ticket addTicket(FormTicket ticket) {
         return ticketService.addTicket(ticket);
     }
 
