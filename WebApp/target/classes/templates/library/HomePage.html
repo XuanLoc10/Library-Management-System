@@ -154,7 +154,7 @@
         </p>
     </div>
 </form>
-
+<!--
 <form id="newTicket" method="post" class="add_form modal" style="display:none;">
     <div id='msgTicket'>
         <h3>Ticket</h3>
@@ -169,9 +169,12 @@
         </p>
     </div>
 </form>
+-->
 <script>    
         $(document).ready(function() {
+        //Hiển thị tất cả sách trong thư viện
         //$.getJSON('/book/books', function(json) {    
+        //Hiển thị sách sẵn sàng cho mượn
         $.getJSON('/book/bookActive', function(json) {
         var tr=[];
         for (var i = 0; i < json.length; i++) {
@@ -181,7 +184,7 @@
             tr.push('<td>' + json[i].author + '</td>');
             tr.push('<td>' + json[i].publishingYear + '</td>');
             tr.push('<td>' + json[i].description + '</td>');
-            tr.push('<td><a class=\'borrow\' id=' + json[i].id + ' href="#newTicket" rel="modal:open"><Button>Borrow</Button></a>&nbsp;&nbsp;<button class=\'edit\' id=' + json[i].id + '>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+            tr.push('<td><Button class=\'borrow\' id=' + json[i].id + '>Borrow</Button></a>&nbsp;&nbsp;<button class=\'edit\' id=' + json[i].id + '>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
             tr.push('</tr>');
             }
             $('#tbody').append($(tr.join('')));
@@ -198,7 +201,6 @@
                     author: $('#author').val(),
                     publishingYear:$('#publishingYear').val(),
                     description: $('#description').val(),
-                    status: 1
                 },
             datatype: "json",
             success: function(result) {
@@ -211,14 +213,42 @@
         });
         });
 
+        $(document).delegate('.borrow', 'click', function() {
+        if (confirm('Do you really want to borrow book?')) {
+            var id = $(this).attr('id');
+            var parent = $(this).parent().parent();
+            $.ajax({
+            url: "/book/addTicket",
+            type: "POST",
+            data: {
+                bookId: id,//("#isbn").val(),
+                borrowerId: 77,//$("#borrowerId").val(),
+                //--------//
+                borrowerDate: new Date()
+            },
+            datatype: "json",
+            success: function(result) {
+                $("#msgBook").html( "<span style='color: green'>Ticket added successfully</span>" );
+                window.setTimeout(function(){location.reload()},1000)
+            },
+            error: function(err) {
+                $("#msgBook").html( "<span style='color: red'>Error</span>" );
+            }
+        });
+    }
+    });
+    /*
         $(document).delegate('#addNewTicket', 'click', function(event) {
         event.preventDefault();
+        console.log(event, "gghgfg");
+        
         $.ajax({
             url: "/book/addTicket",
             type: "POST",
             data: {
-                bookId: $("#isbn").val(),
-                borrowerId: $("#borrowerId").val(),
+                bookId: "7",//("#isbn").val(),
+                borrowerId: 77,//$("#borrowerId").val(),
+                //--------//
                 borrowerDate: new Date()
             },
             datatype: "json",
@@ -231,6 +261,7 @@
             }
         });
     });
+    */
     
     $(document).delegate('.delete', 'click', function() {
         if (confirm('Do you really want to delete record?')) {

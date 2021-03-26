@@ -18,7 +18,6 @@ public class EncrytedPasswordUtils {
     public static void main(String[] args) {
         String password = "123456";
         String encrytedPassword = encrytePassword(password);
-
         System.out.println("Encryted Password: " + encrytedPassword);
         String s = "$2a$10$la6nVcs.Z7bloVUz72FsWeXPj/cOI7kwtSpwfpClOX7cyO9z9Zf42";
         System.out.println("equals: " + isMatched(password, s));

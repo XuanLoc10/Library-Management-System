@@ -34,11 +34,11 @@ public class UserService {
         return null;
     }
 
-
     public User signup(UserEntity user) {
         UserEntity userEntity = userRepository.findByUser(user.getUser());
         if (userEntity == null) {
             user.setPassword(EncrytedPasswordUtils.encrytePassword(user.getPassword()));
+            user.setRole("USER");
             userEntity = userRepository.save(user);
             return UserConverter.entity2Model(userEntity);
         }
@@ -65,10 +65,12 @@ public class UserService {
     public User saveUser(UserEntity user) {
         UserEntity userEntity = userRepository.findById(user.getId()).get();
         if (userEntity != null) {
+            //Ma hoa password khi edit
+            user.setPassword(EncrytedPasswordUtils.encrytePassword(user.getPassword()));
+            user.setRole("USER");
             userEntity = userRepository.save(user);
             return UserConverter.entity2Model(userEntity);
         }
         return null;
     }
-
 }

@@ -148,7 +148,7 @@ h1 {
             tr.push('<td>' + json[i].email + '</td>');
             tr.push('<td>' + json[i].phone + '</td>');
             tr.push('<td>' + json[i].address + '</td>');
-            tr.push('<td><button class=\'details\'>Details</button>&nbsp;&nbsp;<button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+            tr.push('<td><button class=\'detail\'>Detail</button>&nbsp;&nbsp;<button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
             tr.push('</tr>');
         }
         $('#tbody').append($(tr.join('')));
@@ -166,8 +166,7 @@ h1 {
                     fullName: $('#fullName').val(),
                     email: $('#email').val(),
                     phone: $('#phone').val(),
-                    address: $('#address').val(),
-                    role:'USER'
+                    address: $('#address').val()
             },
             datatype: "json",
             success: function(result) {
@@ -233,13 +232,15 @@ h1 {
 
         var id = parent.children("td:nth-child(1)");
         var user = parent.children("td:nth-child(2)");
+        
         var fullName = parent.children("td:nth-child(3)");
         var email = parent.children("td:nth-child(4)");
         var phone = parent.children("td:nth-child(5)");
         var address = parent.children("td:nth-child(6)");
 
         var buttons = parent.children("td:nth-child(7)");
-
+        //----------//Ma hoa password khi edit user
+        var password;
         $.ajax({
             type: "POST",
             url: "/user/saveUser",
@@ -247,6 +248,7 @@ h1 {
                     id : id.html(), 
                     user : user.children("input[type=text]").val(),
                     fullName: fullName.children("input[type=text]").val(),
+                    password: $("#password").val(),
                     email: email.children("input[type=text]").val(),
                     phone: phone.children("input[type=text]").val(),
                     address: address.children("input[type=text]").val(),
@@ -259,7 +261,7 @@ h1 {
                 phone.html(phone.children("input[type=text]").val());
                 address.html(address.children("input[type=text]").val());
                 
-                buttons.html("<button class=\'details\'>Details</button>&nbsp;&nbsp;<button class='edit' id='" + id.html() + "'>Edit</button>&nbsp;&nbsp;<button class='delete' id='" + id.html() + "'>Delete</button>");
+                buttons.html("<button class=\'detail\'>Detail</button>&nbsp;&nbsp;<button class='edit' id='" + id.html() + "'>Edit</button>&nbsp;&nbsp;<button class='delete' id='" + id.html() + "'>Delete</button>");
             },
             error: function() {
                 $('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error updating record').fadeIn().fadeOut(4000, function() {

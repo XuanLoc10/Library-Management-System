@@ -132,7 +132,7 @@ $(document).ready(function() {
         var table = $('#tbTicket').DataTable( {
         });
     });
-        
+    /*
     $(document).delegate('.delete', 'click', function() {
         if (confirm('Do you really want to delete record?')) {
             var id = $(this).attr('id');
@@ -155,18 +155,22 @@ $(document).ready(function() {
             });
         }
     });
+    */
     
     $(document).delegate('.return', 'click', function() {
         var parent = $(this).parent().parent();
 
         var id = parent.children("td:nth-child(1)");
         var isbn = parent.children("td:nth-child(2)");
-        var borrowerId = parent.children("td:nth-child(3)");
-        var borrowerDate = parent.children("td:nth-child(4)");
+        var title = parent.children("td:nth-child(3)");
+        var borrowerId = parent.children("td:nth-child(4)");
+        var borrowerDate = parent.children("td:nth-child(5)");
+        var returnDate = parent.children("td:nth-child(6)");
 
-        var buttons = parent.children("td:nth-child(6)");
+        var buttons = parent.children("td:nth-child(7)");
         
-        isbn.html("<input type='text' id='txtISBN' value='" + isbn.html() + "' disabled/>")
+        isbn.html("<input type='text' id='txtISBN' value='" + isbn.html() + "' disabled/>");
+        title.html("<input type='text' id='txtTitle' value='" + title.html() + "' disabled/>");
         borrowerId.html("<input type='text' id='txtBorrowerId' value='" + borrowerId.html() + "'disabled/>");
         borrowerDate.html("<input type='text' id='txtBorrowerDate' value='" + borrowerDate.html() + "'disabled/>");
 
@@ -179,28 +183,29 @@ $(document).ready(function() {
 
     $(document).delegate('#save', 'click', function() {
         var parent = $(this).parent().parent();
-
+        
         var id = parent.children("td:nth-child(1)");
-        var isbn = parent.children("td:nth-child(2)");
-        var borrowerId = parent.children("td:nth-child(3)");
-        var borrowerDate = parent.children("td:nth-child(4)");
-        var returnDate = parent.children("td:nth-child(5)");
+        var bookId = parent.children("td:nth-child(2)");
+        var borrowerId = parent.children("td:nth-child(4)");
+        var borrowerDate = parent.children("td:nth-child(5)");
+        var returnDate = parent.children("td:nth-child(6)");
 
-        var buttons = parent.children("td:nth-child(6)");
+        var buttons = parent.children("td:nth-child(7)");
 
         $.ajax({
             type: "POST",
             url: "/book/saveTicket",
             data: { 
                     id : id.html(), 
-                    isbn : isbn.children("input[type=text]").val(),
+                    bookId: bookId.children("input[type=text]").val(),
                     borrowerId: borrowerId.children("input[type=text]").val(),
                     borrowerDate: new Date(),
                     returnDate: new Date()
                             },
             datatype: "json",
             success: function() {
-                isbn.html(isbn.children("input[type=text]").val());
+
+                bookId.html(bookId.children("input[type=text]").val());
                 borrowerId.html(borrowerId.children("input[type=text]").val());
                 borrowerDate.html(borrowerDate.children("input[type=text]").val());
                 returnDate.html(returnDate.children("input[type=text]").val());

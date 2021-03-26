@@ -21,3 +21,7 @@ logging:
     org:
       springframework:
         security: DEBUG
+
+error:
+  whitelabel:
+      enabled: false

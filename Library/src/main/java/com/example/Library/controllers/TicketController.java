@@ -46,7 +46,7 @@ public class TicketController {
     }
 
     @PostMapping(value = "/saveTicket", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public @ResponseBody Ticket saveTicket(TicketEntity ticket) {
+    public @ResponseBody Ticket saveTicket(FormTicket ticket) {
         return ticketService.saveTicket(ticket);
     }
 }

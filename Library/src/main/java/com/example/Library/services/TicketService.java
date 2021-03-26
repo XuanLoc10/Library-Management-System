@@ -3,6 +3,7 @@ package com.example.Library.services;
 import com.example.Library.converter.TicketConverter;
 import com.example.Library.entities.BookEntity;
 import com.example.Library.entities.TicketEntity;
+import com.example.Library.models.Book;
 import com.example.Library.models.FormTicket;
 import com.example.Library.models.Ticket;
 import com.example.Library.repositories.BookRepository;
@@ -20,6 +21,7 @@ import java.util.stream.StreamSupport;
 public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
+
     @Autowired
     private BookRepository bookRepository;
 
@@ -46,6 +48,7 @@ public class TicketService {
         if ( bookEntity != null && bookEntity.isStatus()) {
             ticketEntity.setBook(bookEntity);
             ticketEntity.setBorrowerId(ticket.getBorrowerId());
+            //Return book
             ticketEntity.setBorrowerDate(ticket.getBorrowerDate());
             ticketEntity.setReturnDate(ticket.getReturnDate());
             ticketEntity = ticketRepository.save(ticketEntity);
@@ -59,11 +62,35 @@ public class TicketService {
     public void deleteById(Long id) {
         ticketRepository.deleteById(id);
     }
-
+    /*
     public Ticket saveTicket(TicketEntity ticket) {
         TicketEntity ticketEntity = ticketRepository.findById(ticket.getId()).get();
+
         if (ticketEntity != null) {
+
             ticketEntity = ticketRepository.save(ticket);
+            return TicketConverter.entity2Model(ticketEntity);
+        }
+        return null;
+    }
+
+     */
+    public Ticket saveTicket(FormTicket ticket) {
+        //TicketEntity ticketEntity = new TicketEntity();
+        TicketEntity ticketEntity = ticketRepository.findById(ticket.getId()).get();
+        BookEntity bookEntity = bookRepository.findById(ticket.getBookId()).get();
+
+        bookEntity.setId(ticket.getBookId());
+        if (ticketEntity != null) {
+            ticketEntity.setBook(bookEntity);
+            ticketEntity.setBorrowerId(ticket.getBorrowerId());
+            //Return book
+            ticketEntity.setBorrowerDate(ticket.getBorrowerDate());
+            ticketEntity.setReturnDate(ticket.getReturnDate());
+            bookEntity.setStatus(true);
+            ticketEntity = ticketRepository.save(ticketEntity);
+            bookRepository.save(bookEntity);
+            //ticketEntity = ticketRepository.save(ticket);
             return TicketConverter.entity2Model(ticketEntity);
         }
         return null;

@@ -39,15 +39,16 @@ public class BookService {
     public Book addBook(BookEntity book) {
         BookEntity bookEntity = bookRepository.findByTitle(book.getTitle());
         if (bookEntity == null) {
+            book.setStatus(true);
             bookEntity = bookRepository.save(book);
             return BookConverter.entity2Model(bookEntity);
         }
         return null;
     }
-
     public Book saveBook(BookEntity book) {
         BookEntity bookEntity = bookRepository.findById(book.getId()).get();
         if (bookEntity != null) {
+            book.setStatus(true);
             bookEntity = bookRepository.save(book);
             return BookConverter.entity2Model(bookEntity);
         }
