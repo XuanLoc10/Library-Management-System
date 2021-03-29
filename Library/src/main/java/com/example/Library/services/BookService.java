@@ -63,4 +63,12 @@ public class BookService {
                 .map((BookEntity entity) -> BookConverter.entity2Model(entity))
                 .collect(Collectors.toList());
     }
+
+    public List<Book> findByAuthor(String author) {
+        return StreamSupport
+                .stream(bookRepository.findByAuthor(author).spliterator(), false)
+                //.map(UserConverter::entity2Model)
+                .map((BookEntity entity) -> BookConverter.entity2Model(entity))
+                .collect(Collectors.toList());
+    }
 }

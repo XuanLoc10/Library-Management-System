@@ -1,7 +1,6 @@
 package com.example.Library.controllers;
 
 import com.example.Library.API.UserApi;
-import com.example.Library.entities.TicketEntity;
 import com.example.Library.models.FormTicket;
 import com.example.Library.models.Ticket;
 import com.example.Library.services.TicketService;
@@ -48,5 +47,11 @@ public class TicketController {
     @PostMapping(value = "/saveTicket", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody Ticket saveTicket(FormTicket ticket) {
         return ticketService.saveTicket(ticket);
+    }
+
+
+    @GetMapping(value = "/ticket/borrowerId/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Ticket> ticketBorrowerId(@PathVariable Long id) {
+        return ticketService.findByBorrowerId(id);
     }
 }

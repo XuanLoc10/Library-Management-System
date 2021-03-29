@@ -3,7 +3,6 @@ package com.example.Library.services;
 import com.example.Library.converter.TicketConverter;
 import com.example.Library.entities.BookEntity;
 import com.example.Library.entities.TicketEntity;
-import com.example.Library.models.Book;
 import com.example.Library.models.FormTicket;
 import com.example.Library.models.Ticket;
 import com.example.Library.repositories.BookRepository;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -40,7 +40,6 @@ public class TicketService {
     }
 
     public Ticket addTicket(FormTicket ticket) {
-        //TicketEntity ticketEntity = ticketRepository.findById(ticket.getId()).get();
         TicketEntity ticketEntity = new TicketEntity();
         BookEntity bookEntity = bookRepository.findById(ticket.getBookId()).get();
 
@@ -48,7 +47,7 @@ public class TicketService {
         if ( bookEntity != null && bookEntity.isStatus()) {
             ticketEntity.setBook(bookEntity);
             ticketEntity.setBorrowerId(ticket.getBorrowerId());
-            //Return book
+
             ticketEntity.setBorrowerDate(ticket.getBorrowerDate());
             ticketEntity.setReturnDate(ticket.getReturnDate());
             ticketEntity = ticketRepository.save(ticketEntity);
@@ -62,21 +61,8 @@ public class TicketService {
     public void deleteById(Long id) {
         ticketRepository.deleteById(id);
     }
-    /*
-    public Ticket saveTicket(TicketEntity ticket) {
-        TicketEntity ticketEntity = ticketRepository.findById(ticket.getId()).get();
 
-        if (ticketEntity != null) {
-
-            ticketEntity = ticketRepository.save(ticket);
-            return TicketConverter.entity2Model(ticketEntity);
-        }
-        return null;
-    }
-
-     */
     public Ticket saveTicket(FormTicket ticket) {
-        //TicketEntity ticketEntity = new TicketEntity();
         TicketEntity ticketEntity = ticketRepository.findById(ticket.getId()).get();
         BookEntity bookEntity = bookRepository.findById(ticket.getBookId()).get();
 
@@ -90,9 +76,16 @@ public class TicketService {
             bookEntity.setStatus(true);
             ticketEntity = ticketRepository.save(ticketEntity);
             bookRepository.save(bookEntity);
-            //ticketEntity = ticketRepository.save(ticket);
             return TicketConverter.entity2Model(ticketEntity);
         }
         return null;
+    }
+
+    public List<Ticket> findByBorrowerId(Long id) {
+        return StreamSupport
+                .stream(ticketRepository.findByBorrowerId(id).spliterator(), false)
+                //.map(UserConverter::entity2Model)
+                .map((TicketEntity entity) -> TicketConverter.entity2Model(entity))
+                .collect(Collectors.toList());
     }
 }

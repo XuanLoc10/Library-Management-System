@@ -24,9 +24,9 @@ public class BookController {
         return bookService.getActive();
     }
 
-    @GetMapping(value = "/books/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Book one(@PathVariable Long id) {
-        return bookService.findById(id);
+    @GetMapping(value = "/search/{author}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Book> searchAuthor(@PathVariable String author) {
+        return bookService.findByAuthor(author);
     }
 
     @GetMapping("/deleteBook/{id}")

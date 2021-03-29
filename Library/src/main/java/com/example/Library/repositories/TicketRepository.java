@@ -6,11 +6,10 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-
 public interface TicketRepository extends CrudRepository<TicketEntity, Long> {
-
     //Query so sach ma 1 nguoi muon
     @Query(value = "select b.* from Book b where b.status = true", nativeQuery = true)
     List<TicketEntity> ListBookBorrower();
+    @Query(value = "select t.* from ticket t where t.borrower_id= :id", nativeQuery = true)
+    List<TicketEntity> findByBorrowerId(Long id);
 }
-
