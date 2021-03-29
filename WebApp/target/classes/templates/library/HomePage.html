@@ -67,60 +67,48 @@
 
 <h1 style="color:  #2e5764;">Library Management System</h1>
 
+<input type="hidden" id= "idUserLogin" value="84"/>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">LMS</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-<!--
-    <input type="hidden" id= "id" value="77"/>
--->
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/home">Book<span class="sr-only"></span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/ticket">Ticket</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/admin">Admin</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Profile</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Settings</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Logout</a>
-                </div>
-            </li>
-        </ul>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <a class="nav-link" href="/home"><button type="button" class="btn btn-success">Book</button></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/ticket"><button type="button" class="btn btn-outline-success"></span>Ticket</button></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/admin"><button type="button" class="btn btn-outline-success">Admin</button></a>
+        </li>
+    </ul>
+    
+    <div class="container-fluid">
+        <a class="navbar-brand"></a>
+            <form class="d-flex">
+                <input id="txtSearch" class="form-control me-2" type="search" placeholder="ISBN" aria-label="Search">
+                <button id="btSearch" class="btn btn-outline-success" type="submit">Search</button>
+            </form>
     </div>
+    
+    <div class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome, User!</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Settings</a>        
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">Logout</a>
+       </div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M12 2.5a5.5 5.5 0 00-3.096 10.047 9.005 9.005 0 00-5.9 8.18.75.75 0 001.5.045 7.5 7.5 0 0114.993 0 .75.75 0 101.499-.044 9.005 9.005 0 00-5.9-8.181A5.5 5.5 0 0012 2.5zM8 8a4 4 0 118 0 4 4 0 01-8 0z"></path></svg>
+</div>
 </nav>
-<!-- SEARCH
-<nav class="navbar navbar-light bg-light">
-    <form class="form-inline">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">All</a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="#one">ISBN</a>
-              <a class="dropdown-item" href="#one">Title</a>
-              <a class="dropdown-item" href="#two">Author</a>
-              <div role="separator" class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#three">...</a>
-            </div>
-        </div>
-      </div>
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-  </nav>
--->
-<p><a class='btn' href="#add" rel="modal:open">+ Add a Book</a></p>
+<a class='btn' href="#add" rel="modal:open"><button type="button" class="btn btn-primary">+ Add a Book</button></a>
 
 <table id="tbBook" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5" style="width:100%">
     <thead>
@@ -154,27 +142,11 @@
         </p>
     </div>
 </form>
-<!--
-<form id="newTicket" method="post" class="add_form modal" style="display:none;">
-    <div id='msgTicket'>
-        <h3>Ticket</h3>
-        <p>
-            <label>ISBN</label>
-            <input type="text" id="isbn" name="isbn">
-            <label>BorrowerID</label>
-            <input type="text" id="borrowerId" name="borrowerId">
-        </p>
-        <p>
-            <button id="addNewTicket" value="Submit">Submit</button>
-        </p>
-    </div>
-</form>
--->
+
 <script>    
         $(document).ready(function() {
-        //Hiển thị tất cả sách trong thư viện
         //$.getJSON('/book/books', function(json) {    
-        //Hiển thị sách sẵn sàng cho mượn
+        
         $.getJSON('/book/bookActive', function(json) {
         var tr=[];
         for (var i = 0; i < json.length; i++) {
@@ -189,7 +161,34 @@
             }
             $('#tbody').append($(tr.join('')));
             var table = $('#tbBook').DataTable( {
+                "paging": false,
+                "searching": false,
+
             });  
+        });
+        
+        
+        $(document).delegate('#btSearch', 'click', function(event) {
+        event.preventDefault();
+        $.getJSON('/book/search/' + $("#txtSearch").val(), function(json) {
+        var tr=[];
+        for (var i = 0; i < json.length; i++) {
+            tr.push('<tr>');
+            tr.push('<td>' + json[i].id + '</td>');
+            tr.push('<td>' + json[i].title + '</td>');
+            tr.push('<td>' + json[i].author + '</td>');
+            tr.push('<td>' + json[i].publishingYear + '</td>');
+            tr.push('<td>' + json[i].description + '</td>');
+            tr.push('<td><Button class=\'borrow\' id=' + json[i].id + '>Borrow</Button></a>&nbsp;&nbsp;<button class=\'edit\' id=' + json[i].id + '>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+            tr.push('</tr>');
+            }
+            $('#tbody').append($(tr.join('')));
+            var table = $('#tbBook').DataTable( {
+                "destroy":true,
+                "paging": false,
+                "searching": false,
+            });  
+        });
         });
 
         $(document).delegate('#addNewBook', 'click', function(event) {
@@ -213,7 +212,7 @@
         });
         });
 
-        $(document).delegate('.borrow', 'click', function() {
+    $(document).delegate('.borrow', 'click', function() {
         if (confirm('Do you really want to borrow book?')) {
             var id = $(this).attr('id');
             var parent = $(this).parent().parent();
@@ -221,48 +220,22 @@
             url: "/book/addTicket",
             type: "POST",
             data: {
-                bookId: id,//("#isbn").val(),
-                borrowerId: 77,//$("#borrowerId").val(),
-                //--------//
+                bookId: id,
+                borrowerId: $("#idUserLogin").val(),
                 borrowerDate: new Date()
             },
             datatype: "json",
             success: function(result) {
-                $("#msgBook").html( "<span style='color: green'>Ticket added successfully</span>" );
+                window.open("/ticket");
                 window.setTimeout(function(){location.reload()},1000)
             },
             error: function(err) {
-                $("#msgBook").html( "<span style='color: red'>Error</span>" );
+                alert("Error");
             }
         });
     }
     });
-    /*
-        $(document).delegate('#addNewTicket', 'click', function(event) {
-        event.preventDefault();
-        console.log(event, "gghgfg");
-        
-        $.ajax({
-            url: "/book/addTicket",
-            type: "POST",
-            data: {
-                bookId: "7",//("#isbn").val(),
-                borrowerId: 77,//$("#borrowerId").val(),
-                //--------//
-                borrowerDate: new Date()
-            },
-            datatype: "json",
-            success: function(result) {
-                $("#msgTicket").html( "<span style='color: green'>Ticket added successfully</span>" );
-                window.setTimeout(function(){location.reload()},1000)
-            },
-            error: function(err) {
-                $("#msgTicket").html( "<span style='color: red'>Error</span>" );
-            }
-        });
-    });
-    */
-    
+
     $(document).delegate('.delete', 'click', function() {
         if (confirm('Do you really want to delete record?')) {
             var id = $(this).attr('id');
@@ -335,6 +308,7 @@
                 description.html(description.children("input[type=text]").val());
 						
                 buttons.html("<button class=\'borrow\'>Borrow</button>&nbsp;&nbsp;<button class='edit' id='" + id.html() + "'>Edit</button>&nbsp;&nbsp;<button class='delete' id='" + id.html() + "'>Delete</button>");
+                alert("Save book successfully!");
 			},
 			error: function() {
 				$('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error updating record').fadeIn().fadeOut(4000, function() {

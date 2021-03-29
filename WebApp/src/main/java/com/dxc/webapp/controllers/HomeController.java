@@ -18,7 +18,6 @@ public class HomeController {
 @Autowired
 	UserApi userApi;
 
-
 	@GetMapping("/")
 	public String Page(Model model) {
 		return "library/HomePage";
@@ -40,9 +39,8 @@ public class HomeController {
 
 	@GetMapping("/login")
 	public String login(Model model) {
-		return "login/FromLogin";
+		return "login/FormLogin";
 	}
-
 
 	@GetMapping("/admin")
 	public String userInfo(Model model) {
@@ -57,16 +55,4 @@ public class HomeController {
 	public String ticket(Model model) {
 		return "library/Ticket";
 	}
-	/*
-	@GetMapping("/403")
-	public String notPermitPage(Model model) {
-		return "403";
-	}
-
-	@GetMapping("/error")
-	public String errorPage(Model model) {
-		return "redirect:403";
-	}
-
-	 */
 }

@@ -110,16 +110,7 @@
     }
     #logreg-forms .social-btn span{
         display: none;
-    }
-    #logreg-forms  .facebook-btn:after{
-        content:'Facebook';
-    }
-  
-    #logreg-forms  .google-btn:after{
-        content:'Google+';
-    }
-
-    
+    }    
 }
 </style>
 
@@ -143,6 +134,29 @@ $(()=>{
     $('#logreg-forms #btn-signup').click(toggleSignUp);
     $('#logreg-forms #cancel_signup').click(toggleSignUp);
 })
+
+$(document).delegate('#addNewUser', 'click', function(event) {
+        event.preventDefault();
+        $.ajax({
+            url: "/user/signup",
+            type: "POST",
+            data: { user: $('#user').val(),  
+                    password: $('#password').val(),
+                    fullName: $('#fullName').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    address: $('#address').val()
+            },
+            datatype: "json",
+            success: function(result) {
+                alert("User added successfully");
+                window.setTimeout(function(){location.reload()},1000)
+            },
+            error: function(err) {
+                $("#msg").html( "<span style='color: red'>Error</span>" );
+            }
+        });
+    });
 
 </script>
     <title>LMS - Login/Register</title>
@@ -170,15 +184,15 @@ $(()=>{
             <form action="/user/signup" class="form-signup" method="post">
                 <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Register</h1>
                 <input type="text" id="user" name ="user" class="form-control" placeholder="User" required="" autofocus="">
-                <input type="password" id="user-pass" name="password" class="form-control" placeholder="Password" required autofocus="">
-                <input type="password" id="user-repeatpass" class="form-control" placeholder="Repeat Password" required autofocus="">
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required autofocus="">
+                <input type="password" id="repeatpass" class="form-control" placeholder="Repeat Password" required autofocus="">
                 <hr>
                 <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Full Name" required autofocus="">
-                <input type="email" id="user-email" name="email" class="form-control" placeholder="Email" required autofocus="">
+                <input type="email" id="email" name="email" class="form-control" placeholder="Email" required autofocus="">
                 <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone" required autofocus="">
                 <input type="text" id="address" name="address" class="form-control" placeholder="Address" required autofocus="">
 
-                <button class="btn btn-primary btn-block" type="submit"><i class="fas fa-user-plus"></i> Sign Up</button>
+                <button  id="addNewUser" class="btn btn-primary btn-block" type="submit"><i class="fas fa-user-plus"></i> Sign Up</button>
                 <a href="#" id="cancel_signup"><i class="fas fa-angle-left"></i> Back</a>
             </form>
             <br>
@@ -204,10 +218,8 @@ $(()=>{
     $('#logreg-forms #btn-signup').click(toggleSignUp);
     $('#logreg-forms #cancel_signup').click(toggleSignUp);
 })g" target="_blank" style="color:black"></a>
-
     </p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="script.js"></script>
 </body>
 </html>
