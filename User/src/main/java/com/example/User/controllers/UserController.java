@@ -20,43 +20,46 @@ import java.util.List;
 
 @RestController
 public class UserController {
-    @Autowired
-    private UserService userService;
 
-    @GetMapping(value ="/users", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<User> getAll() {
-        return userService.getAll();
-    }
+	@Autowired
+	private UserService userService;
 
-    @RequestMapping(value = "/auth",method = RequestMethod.POST)
-    public @ResponseBody
-    User auth(@RequestBody UserEntity user) {
-        return userService.auth(user);
-    }
+	@GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<User> getAll() {
+		return userService.getAll();
+	}
 
-    @PostMapping(value = "/signup",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public @ResponseBody
-    User signup(UserEntity user) {
-        return userService.signup(user);
-    }
+	@RequestMapping(value = "/auth", method = RequestMethod.POST)
+	public @ResponseBody
+	User auth(@RequestBody UserEntity user) {
+		return userService.auth(user);
+	}
 
-    @GetMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public User one(@PathVariable Long id) {
-        return userService.findById(id);
-    }
-    //Xoa
-    @GetMapping("/delete/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteById(id);
-    }
+	@PostMapping(value = "/signup", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public @ResponseBody
+	User signup(UserEntity user) {
+		return userService.signup(user);
+	}
 
-    @GetMapping("/{user}")
-    public User findByUser(@PathVariable String user) {
-        return userService.findByUser(user);
-    }
+	@GetMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public User one(@PathVariable Long id) {
+		return userService.findById(id);
+	}
 
-    @PostMapping(value = "/saveUser", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public @ResponseBody User saveUser(UserEntity user) {
-        return userService.saveUser(user);
-    }
+	//Xoa
+	@GetMapping("/delete/{id}")
+	public void deleteUser(@PathVariable Long id) {
+		userService.deleteById(id);
+	}
+
+	@PostMapping("/user/{user}")
+	public User findByUser(@PathVariable String user) {
+		return userService.findByUser(user);
+	}
+
+	@PostMapping(value = "/saveUser", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public @ResponseBody
+	User saveUser(UserEntity user) {
+		return userService.saveUser(user);
+	}
 }

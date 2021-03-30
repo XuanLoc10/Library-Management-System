@@ -1,17 +1,13 @@
 package com.dxc.webapp.controllers;
 
 import com.dxc.webapp.api.UserApi;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.dxc.webapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.ws.rs.GET;
 
 @Controller
 public class HomeController {
@@ -26,15 +22,13 @@ public class HomeController {
 
 	@GetMapping("/home")
 	public String homePage(Model model) {
-		//Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		if (auth != null) {
-//			String username = auth.getName();
-//			String userResponse = userApi.findByUser(username);
-//			ObjectMapper objectMapper = new ObjectMapper();
-//			//objectMapper.readValue(userResponse, User.class);
-//			model.addAttribute("user", userResponse);
-//			return "library/HomePage";
-//		}
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			String username = auth.getName();
+			User user= userApi.findByUser(username);
+			model.addAttribute("user", user);
+			return "library/HomePage";
+		}
 		return "library/HomePage";
 	}
 
