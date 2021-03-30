@@ -24,7 +24,7 @@
   font: normal 12px/18px "Lucida Grande", Verdana;
   padding: 3px;
   border: 1px solid #ddd;
-  width: 200px;
+  width: 250px;
 }
 
 #msg {
@@ -44,28 +44,11 @@ h1 {
     color: #0099ff;
 
 }
-.custab{
-    border: 1px solid #ccc;
-    padding: 5px;
-    margin: 5% 0;
-    box-shadow: 3px 3px 2px #ccc;
-    transition: 0.5s;
-    }
-.custab:hover{
-    box-shadow: 3px 3px 0px transparent;
-    transition: 0.5s;
-    }
-
 </style>
 </head>
 <body>
 <h1 style="color: #2e5764;">Library Management System</h1>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -96,26 +79,79 @@ h1 {
     </div>
 </nav>
 
-<p><a class='btn' href="#add" rel="modal:open"><button type="button" class="btn btn-primary">+ Add New User</button></a></p>
 
-<table id="tbUser" class="table table-striped stripe row-border order-column" cellspacing="3" width="100%">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>User</th>
-        <th>Full Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Address</th>
-        <th class="text-center">Action</th>
-    </tr>
-    </thead>
-    <tbody id="tbody">
-    </tbody>
-</table>
+<div class="container">
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#adUser">User</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#adBook">Book</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#adTicket">Ticket</a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <!--User-->
+    <div id="adUser" class="container tab-pane active"><br>
+        <p><a class='btn' href="#add" rel="modal:open"><button type="button" class="btn btn-primary btn-sm">+ Add New User</button></a></p>
+        <table id="tbUser" class="table table-striped stripe row-border order-column" cellspacing="3" width="100%">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>User</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th class="text-center">Action</th>
+            </tr>
+            </thead>
+            <tbody id="tbodyUser">
+            </tbody>
+        </table>
+    </div>
+    <!--Book-->
+    <div id="adBook" class="container tab-pane fade"><br>
+        <table id="tbBook" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5" style="width:100%">
+            <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publshing Year</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th class="text-center">Action</th>
+            </tr>
+            </thead>
+            <tbody id="tbodyBook"></tbody>
+        </table>
+    </div>
+    <!--Ticket-->
+    <div id="adTicket" class="container tab-pane fade"><br>
+        <table id="tbTicket" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5">
+            <thead>
+            <tr>
+                <th>TicketID</th>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Borrow ID</th>
+                <th>Borrow Date</th>
+                <th>Return Date</th>
+                <th class="text-center">Action</th>
+            </tr>
+            </thead>
+            <tbody id="tbodyTicket"></tbody>
+        </table>
+    </div>
+  </div>
+</div>
+
 <form id="add" action="#"  method="post" class="add_form modal" style="display:none;">
     <div id='msg'>
-        <h3>Add a New User</h3>
         <p>
             <label>User</label>
             <input type="text" id="user" name="user">
@@ -151,9 +187,47 @@ h1 {
             tr.push('<td><button class=\'detail\'>Detail</button>&nbsp;&nbsp;<button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
             tr.push('</tr>');
         }
-        $('#tbody').append($(tr.join('')));
+        $('#tbodyUser').append($(tr.join('')));
         var table = $('#tbUser').DataTable( {
         });  
+    });
+
+    $.getJSON('/book/books', function(json) {    
+    var tr=[];
+    for (var i = 0; i < json.length; i++) {
+        tr.push('<tr>');
+        tr.push('<td>' + json[i].id + '</td>');
+        tr.push('<td>' + json[i].title + '</td>');
+        tr.push('<td>' + json[i].author + '</td>');
+        tr.push('<td>' + json[i].publishingYear + '</td>');
+        tr.push('<td>' + json[i].description + '</td>');
+        tr.push('<td>' + json[i].status + '</td>');
+        tr.push('<td><Button class=\'borrow\' id=' + json[i].id + '>Borrow</Button></a>&nbsp;&nbsp;<button class=\'edit\' id=' + json[i].id + '>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+        tr.push('</tr>');
+        }
+        $('#tbodyBook').append($(tr.join('')));
+        var table = $('#tbBook').DataTable( {
+        });  
+    });
+
+
+    $.getJSON('book/tickets', function(json) {
+    var tr=[];
+    for (var i = 0; i < json.length; i++) {
+        tr.push('<tr>');
+        tr.push('<td>' + json[i].id + '</td>');
+        tr.push('<td>' + json[i].book.id + '</td>');
+        tr.push('<td>' + json[i].book.title + '</td>');
+        tr.push('<td>' + json[i].borrowerId + '</td>');
+        tr.push('<td>' + json[i].borrowerDate + '</td>');
+        tr.push('<td>' + json[i].returnDate + '</td>');
+        tr.push('<td><button class=\'return\' id=' + json[i].id + '>Return</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+        tr.push('</tr>');
+        }
+
+        $('#tbodyTicket').append($(tr.join('')));
+        var table = $('#tbTicket').DataTable( {
+        });
     });
     
     $(document).delegate('#addNewUser', 'click', function(event) {

@@ -23,7 +23,7 @@
 		  font: normal 12px/18px "Lucida Grande", Verdana;
 		  padding: 3px;
 		  border: 1px solid #ddd;
-		  width: 200px;
+		  width: 250px;
 		}
 		#msgBook {
 		  margin: 10px;
@@ -50,17 +50,6 @@
 			color: #0099ff;
 
 		}
-		.custab{
-			border: 1px solid #ccc;
-			padding: 5px;
-			margin: 5% 0;
-			box-shadow: 3px 3px 2px #ccc;
-			transition: 0.5s;
-			}
-		.custab:hover{
-			box-shadow: 3px 3px 0px transparent;
-			transition: 0.5s;
-			}
     </style>
 </head>
 <body>
@@ -70,9 +59,6 @@
 <input type="hidden" id= "idUserLogin" value="84"/>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -90,7 +76,7 @@
     <div class="container-fluid">
         <a class="navbar-brand"></a>
             <form class="d-flex">
-                <input id="txtSearch" class="form-control me-2" type="search" placeholder="ISBN" aria-label="Search">
+                <input id="txtSearch" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button id="btSearch" class="btn btn-outline-success" type="submit">Search</button>
             </form>
     </div>
@@ -108,7 +94,11 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill-rule="evenodd" d="M12 2.5a5.5 5.5 0 00-3.096 10.047 9.005 9.005 0 00-5.9 8.18.75.75 0 001.5.045 7.5 7.5 0 0114.993 0 .75.75 0 101.499-.044 9.005 9.005 0 00-5.9-8.181A5.5 5.5 0 0012 2.5zM8 8a4 4 0 118 0 4 4 0 01-8 0z"></path></svg>
 </div>
 </nav>
-<a class='btn' href="#add" rel="modal:open"><button type="button" class="btn btn-primary">+ Add a Book</button></a>
+
+
+<div class="container">
+    
+<a class='btn' href="#add" rel="modal:open"><button type="button" class="btn btn-primary btn-sm">+ Add a Book</button></a>
 
 <table id="tbBook" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5" style="width:100%">
     <thead>
@@ -123,10 +113,10 @@
     </thead>
     <tbody id="tbody"></tbody>
 </table>
+</div>
 
 <form id="add" method="post" class="add_form modal" style="display:none;">
     <div id='msgBook'>
-        <h3>Add a New Book</h3>
         <p>
             <label>Title</label>
             <input type="text" id="title" name="title">
@@ -144,9 +134,9 @@
 </form>
 
 <script>    
-        $(document).ready(function() {
+    $(document).ready(function() {
         //$.getJSON('/book/books', function(json) {    
-        
+        /*
         $.getJSON('/book/bookActive', function(json) {
         var tr=[];
         for (var i = 0; i < json.length; i++) {
@@ -161,55 +151,51 @@
             }
             $('#tbody').append($(tr.join('')));
             var table = $('#tbBook').DataTable( {
-                "paging": false,
-                "searching": false,
-
+                "searching": false
             });  
         });
-        
+        */
         
         $(document).delegate('#btSearch', 'click', function(event) {
-        event.preventDefault();
-        $.getJSON('/book/search/' + $("#txtSearch").val(), function(json) {
-        var tr=[];
-        for (var i = 0; i < json.length; i++) {
-            tr.push('<tr>');
-            tr.push('<td>' + json[i].id + '</td>');
-            tr.push('<td>' + json[i].title + '</td>');
-            tr.push('<td>' + json[i].author + '</td>');
-            tr.push('<td>' + json[i].publishingYear + '</td>');
-            tr.push('<td>' + json[i].description + '</td>');
-            tr.push('<td><Button class=\'borrow\' id=' + json[i].id + '>Borrow</Button></a>&nbsp;&nbsp;<button class=\'edit\' id=' + json[i].id + '>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
-            tr.push('</tr>');
-            }
-            $('#tbody').append($(tr.join('')));
-            var table = $('#tbBook').DataTable( {
-                "destroy":true,
-                "paging": false,
-                "searching": false,
-            });  
-        });
+            event.preventDefault();
+            $.getJSON('/book/search/' + $("#txtSearch").val(), function(json) {
+            var tr=[];
+            for (var i = 0; i < json.length; i++) {
+                tr.push('<tr>');
+                tr.push('<td>' + json[i].id + '</td>');
+                tr.push('<td>' + json[i].title + '</td>');
+                tr.push('<td>' + json[i].author + '</td>');
+                tr.push('<td>' + json[i].publishingYear + '</td>');
+                tr.push('<td>' + json[i].description + '</td>');
+                tr.push('<td><Button class=\'borrow\' id=' + json[i].id + '>Borrow</Button></a>&nbsp;&nbsp;<button class=\'edit\' id=' + json[i].id + '>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+                tr.push('</tr>');
+                }
+                $('#tbody').append($(tr.join('')));
+                var table = $('#tbBook').DataTable( {
+                    "searching": false
+                });  
+            });
         });
 
         $(document).delegate('#addNewBook', 'click', function(event) {
-        event.preventDefault();
-        $.ajax({
-            url: "/book/addBook",
-            type: "POST",
-            data: { title: $('#title').val(),
-                    author: $('#author').val(),
-                    publishingYear:$('#publishingYear').val(),
-                    description: $('#description').val(),
+            event.preventDefault();
+            $.ajax({
+                url: "/book/addBook",
+                type: "POST",
+                data: { title: $('#title').val(),
+                        author: $('#author').val(),
+                        publishingYear:$('#publishingYear').val(),
+                        description: $('#description').val(),
+                    },
+                datatype: "json",
+                success: function(result) {
+                    $("#msgBook").html( "<span style='color: green'>Book added successfully</span>" );
+                    window.setTimeout(function(){location.reload()},1000)
                 },
-            datatype: "json",
-            success: function(result) {
-                $("#msgBook").html( "<span style='color: green'>Book added successfully</span>" );
-                window.setTimeout(function(){location.reload()},1000)
-            },
-            error: function(err) {
-                $("#msgBook").html( "<span style='color: red'>Error</span>" );
-            }
-        });
+                error: function(err) {
+                    $("#msgBook").html( "<span style='color: red'>Error</span>" );
+                }
+            });
         });
 
     $(document).delegate('.borrow', 'click', function() {
