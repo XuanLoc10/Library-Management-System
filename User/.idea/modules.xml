@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/../Eureka/Eureka.iml" filepath="$PROJECT_DIR$/../Eureka/Eureka.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Library/Library.iml" filepath="$PROJECT_DIR$/../Library/Library.iml" />
       <module fileurl="file://$PROJECT_DIR$/User.iml" filepath="$PROJECT_DIR$/User.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../WebApp/WebApp.iml" filepath="$PROJECT_DIR$/../WebApp/WebApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WebApp/webapp.iml" filepath="$PROJECT_DIR$/../WebApp/webapp.iml" />
     </modules>
   </component>
 </project>

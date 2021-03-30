@@ -6,10 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="webapp" />
         <module name="User" />
         <module name="Library" />
         <module name="Eureka" />
-        <module name="WebApp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -17,6 +17,7 @@
       <module name="Image" target="11" />
       <module name="Library" target="11" />
       <module name="User" target="11" />
+      <module name="webapp" target="8" />
       <module name="WebApp" target="8" />
       <module name="webapp (1)" target="8" />
       <module name="webapp (2)" target="8" />
@@ -29,6 +30,7 @@
       <module name="Library" options="-parameters" />
       <module name="User" options="-parameters" />
       <module name="WebApp" options="-parameters" />
+      <module name="webapp" options="-parameters" />
       <module name="webapp (1)" options="-parameters" />
       <module name="webapp (2)" options="-parameters" />
     </option>

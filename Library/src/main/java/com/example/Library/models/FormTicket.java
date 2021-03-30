@@ -48,5 +48,4 @@ public class FormTicket {
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
-
 }
