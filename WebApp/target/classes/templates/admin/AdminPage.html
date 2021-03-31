@@ -27,6 +27,16 @@
   width: 250px;
 }
 
+#msgBook {
+  margin: 10px;
+  padding: 30px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  background: -moz-linear-gradient(top, #2e5764, #1e3d47);
+  background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #1e3d47),color-stop(1, #2e5764));
+}
+
 #msg {
   margin: 10px;
   padding: 30px;
@@ -37,12 +47,12 @@
   background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #1e3d47),color-stop(1, #2e5764));
 }
 
+
 h1 {
     padding: 5px;
     margin: 2% 0;
     text-align: center;
     color: #0099ff;
-
 }
 </style>
 </head>
@@ -66,7 +76,7 @@ h1 {
         </ul>
         
         <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome, User!</a>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome, admin</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="#">Profile</a>
                 <div class="dropdown-divider"></div>
@@ -79,24 +89,40 @@ h1 {
     </div>
 </nav>
 
-
 <div class="container">
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#adUser">User</a>
+      <a class="nav-link active" data-toggle="tab" href="#adTicket">Ticket</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#adUser">User</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#adBook">Book</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#adTicket">Ticket</a>
-    </li>
+
   </ul>
 
   <div class="tab-content">
+    <!--Ticket-->
+    <div id="adTicket" class="container tab-pane active"><br>
+        <table id="tbTicket" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5">
+            <thead>
+            <tr>
+                <th>TicketID</th>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Borrow ID</th>
+                <th>Borrow Date</th>
+                <th>Return Date</th>
+            </tr>
+            </thead>
+            <tbody id="tbodyTicket"></tbody>
+        </table>
+    </div>
     <!--User-->
-    <div id="adUser" class="container tab-pane active"><br>
-        <p><a class='btn' href="#add" rel="modal:open"><button type="button" class="btn btn-primary btn-sm">+ Add New User</button></a></p>
+    <div id="adUser" class="container tab-pane fade"><br>
+        <p><a class='btn' href="#addUser" rel="modal:open"><button type="button" class="btn btn-primary btn-sm">+ Add New User</button></a></p>
         <table id="tbUser" class="table table-striped stripe row-border order-column" cellspacing="3" width="100%">
             <thead>
             <tr>
@@ -115,6 +141,7 @@ h1 {
     </div>
     <!--Book-->
     <div id="adBook" class="container tab-pane fade"><br>
+        <p><a class='btn' href="#addBook" rel="modal:open"><button type="button" class="btn btn-primary btn-sm">+ Add a Book</button></a></p>
         <table id="tbBook" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5" style="width:100%">
             <thead>
             <tr>
@@ -130,27 +157,10 @@ h1 {
             <tbody id="tbodyBook"></tbody>
         </table>
     </div>
-    <!--Ticket-->
-    <div id="adTicket" class="container tab-pane fade"><br>
-        <table id="tbTicket" class="table table-striped custab" border="2" cellspacing="0" cellpadding="5">
-            <thead>
-            <tr>
-                <th>TicketID</th>
-                <th>ISBN</th>
-                <th>Title</th>
-                <th>Borrow ID</th>
-                <th>Borrow Date</th>
-                <th>Return Date</th>
-                <th class="text-center">Action</th>
-            </tr>
-            </thead>
-            <tbody id="tbodyTicket"></tbody>
-        </table>
-    </div>
   </div>
 </div>
 
-<form id="add" action="#"  method="post" class="add_form modal" style="display:none;">
+<form id="addUser" action="#"  method="post" class="add_form modal" style="display:none;">
     <div id='msg'>
         <p>
             <label>User</label>
@@ -172,6 +182,24 @@ h1 {
     </div>
 </form>
 
+<form id="addBook" action="#" method="post" class="add_form modal" style="display:none;">
+    <div id='msgBook'>
+        <p>
+            <label>Title</label>
+            <input type="text" id="title" name="title">
+            <label>Author</label>
+            <input type="text" id="author" name="author">
+            <label>Publish Year</label>
+            <input type="text" id="publishingYear" name="publishingYear">
+            <label>Description</label>
+            <input type="text" id="description" name="description">
+        </p>
+        <p>
+            <input type="submit" id="addNewBook" value="Submit">
+        </p>
+    </div>
+</form>
+
 <script>
     $(document).ready(function() {
     $.getJSON('/user/users', function(json) {
@@ -184,7 +212,7 @@ h1 {
             tr.push('<td>' + json[i].email + '</td>');
             tr.push('<td>' + json[i].phone + '</td>');
             tr.push('<td>' + json[i].address + '</td>');
-            tr.push('<td><button class=\'detail\'>Detail</button>&nbsp;&nbsp;<button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+            tr.push('<td><button class=\'editUser\'>Edit</button>&nbsp;&nbsp;<button class=\'deleteUser\' id=' + json[i].id + '>Delete</button></td>');
             tr.push('</tr>');
         }
         $('#tbodyUser').append($(tr.join('')));
@@ -202,14 +230,13 @@ h1 {
         tr.push('<td>' + json[i].publishingYear + '</td>');
         tr.push('<td>' + json[i].description + '</td>');
         tr.push('<td>' + json[i].status + '</td>');
-        tr.push('<td><Button class=\'borrow\' id=' + json[i].id + '>Borrow</Button></a>&nbsp;&nbsp;<button class=\'edit\' id=' + json[i].id + '>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+        tr.push('<td><button class=\'editBook\'>Edit</button>&nbsp;&nbsp;<button class=\'deleteBook\' id=' + json[i].id + '>Delete</button></td>');
         tr.push('</tr>');
         }
         $('#tbodyBook').append($(tr.join('')));
         var table = $('#tbBook').DataTable( {
         });  
     });
-
 
     $.getJSON('book/tickets', function(json) {
     var tr=[];
@@ -220,8 +247,11 @@ h1 {
         tr.push('<td>' + json[i].book.title + '</td>');
         tr.push('<td>' + json[i].borrowerId + '</td>');
         tr.push('<td>' + json[i].borrowerDate + '</td>');
-        tr.push('<td>' + json[i].returnDate + '</td>');
-        tr.push('<td><button class=\'return\' id=' + json[i].id + '>Return</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+        if (json[i].returnDate !== null) {
+            tr.push('<td>' + json[i].returnDate + '</td>');
+        } else{
+        tr.push('<td>' + '' + '</td>');
+        }
         tr.push('</tr>');
         }
 
@@ -229,7 +259,7 @@ h1 {
         var table = $('#tbTicket').DataTable( {
         });
     });
-    
+
     $(document).delegate('#addNewUser', 'click', function(event) {
         event.preventDefault();
         $.ajax({
@@ -244,7 +274,7 @@ h1 {
             },
             datatype: "json",
             success: function(result) {
-                $("#msg").html( "<span style='color: green'>User added successfully</span>" );
+                $("#msg").html("<span style='color: green'>User added successfully</span>" );
                 window.setTimeout(function(){location.reload()},1000)
             },
             error: function(err) {
@@ -253,7 +283,7 @@ h1 {
         });
     });
 
-    $(document).delegate('.delete', 'click', function() {
+    $(document).delegate('.deleteUser', 'click', function() {
         if (confirm('Do you really want to delete record?')) {
             var id = $(this).attr('id');
             var parent = $(this).parent().parent();
@@ -276,7 +306,7 @@ h1 {
         }
     });
     
-    $(document).delegate('.edit', 'click', function() {
+    $(document).delegate('.editUser', 'click', function() {
         var parent = $(this).parent().parent();
 
         var id = parent.children("td:nth-child(1)");
@@ -294,14 +324,14 @@ h1 {
         phone.html("<input type='text' id='txtPhone' value='" + phone.html() + "'/>");
         address.html("<input type='text' id='txtAddress' value='" + address.html() + "'/>");
 
-        buttons.html("<button id='save'>Save</button>&nbsp;&nbsp;<button class='Cancel' id='cancel'>Cancel</button>");
+        buttons.html("<button id='saveUser'>Save</button>&nbsp;&nbsp;<button class='Cancel' id='cancel'>Cancel</button>");
     });
 
     $(document).delegate('#cancel', 'click', function() {
         window.setTimeout(function(){location.reload()},1000);
 	});
 
-    $(document).delegate('#save', 'click', function() {
+    $(document).delegate('#saveUser', 'click', function() {
         var parent = $(this).parent().parent();
 
         var id = parent.children("td:nth-child(1)");
@@ -313,7 +343,7 @@ h1 {
         var address = parent.children("td:nth-child(6)");
 
         var buttons = parent.children("td:nth-child(7)");
-        //----------//Ma hoa password khi edit user
+
         var password;
         $.ajax({
             type: "POST",
@@ -343,6 +373,110 @@ h1 {
                 });
             }
         });
+	});
+    
+    $(document).delegate('#addNewBook', 'click', function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: "/book/addBook",
+                type: "POST",
+                data: { title: $('#title').val(),
+                        author: $('#author').val(),
+                        publishingYear:$('#publishingYear').val(),
+                        description: $('#description').val(),
+                    },
+                datatype: "json",
+                success: function(result) {
+                    $("#msgBook").html( "<span style='color: green'>Book added successfully</span>" );
+                    window.setTimeout(function(){location.reload()},1000)
+                },
+                error: function(err) {
+                    $("#msgBook").html( "<span style='color: red'>Error</span>" );
+                }
+            });
+        });
+
+    
+        $(document).delegate('.deleteBook', 'click', function() {
+        if (confirm('Do you really want to delete record?')) {
+            var id = $(this).attr('id');
+            var parent = $(this).parent().parent();
+            $.ajax({
+                type: "GET",
+                url: "/book/deleteBook/" + id,
+                cache: false,
+                success: function() {
+                    parent.fadeOut('slow', function() {
+                        $(this).remove();
+                    });
+                    location.reload(true)
+                },
+                error: function() {
+                    $('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error deleting record').fadeIn().fadeOut(4000, function() {
+                        $(this).remove();
+                    });
+                }
+            });
+        }
+    });
+    
+    $(document).delegate('.editBook', 'click', function() {
+        var parent = $(this).parent().parent();
+
+        var id = parent.children("td:nth-child(1)");
+        var title = parent.children("td:nth-child(2)");
+        var author = parent.children("td:nth-child(3)");
+        var publishingYear = parent.children("td:nth-child(4)");
+        var description = parent.children("td:nth-child(5)");
+        var status = parent.children("td:nth-child(6)");
+        var buttons = parent.children("td:nth-child(7)");
+
+        title.html("<input type='text' id='txtTitle' value='" + title.html() + "'/>");
+        author.html("<input type='text' id='txtAuthor' value='" + author.html() + "'/>");
+        publishingYear.html("<input type='text' id='txtPublishingYear' value='" + publishingYear.html() + "'/>");
+        description.html("<input type='text' id='txtDescription' value='" + description.html() + "'/>");
+        status.html("<input type='text' id='txtstatus' value='" + status.html() + "'/>");
+        buttons.html("<button id='saveBook'>Save</button>&nbsp;&nbsp;<button class='cancel' id='cancel'>Cannel</button>");
+    });
+
+    $(document).delegate('#saveBook', 'click', function() {
+		var parent = $(this).parent().parent();
+
+		var id = parent.children("td:nth-child(1)");
+		var title = parent.children("td:nth-child(2)");
+        var author = parent.children("td:nth-child(3)");
+        var publishingYear = parent.children("td:nth-child(4)");
+        var description = parent.children("td:nth-child(5)");
+        var status = parent.children("td:nth-child(6)");
+                
+		var buttons = parent.children("td:nth-child(7)");
+
+		$.ajax({
+			type: "POST",
+			url: "/book/saveBook",
+			data: { id : id.html(), 
+                    title : title.children("input[type=text]").val(),
+                    author: author.children("input[type=text]").val(),
+                    publishingYear: publishingYear.children("input[type=text]").val(),
+                    description: description.children("input[type=text]").val(),
+                    status: status.children("input[type=text]").val()
+                    },
+			datatype: "json",
+			success: function() {
+                title.html(title.children("input[type=text]").val());
+                author.html(author.children("input[type=text]").val());
+                publishingYear.html(publishingYear.children("input[type=text]").val());
+                description.html(description.children("input[type=text]").val());
+				status.html(status.children("input[type=text]").val());
+                buttons.html("<button class='edit' id='" + id.html() + "'>Edit</button>&nbsp;&nbsp;<button class='deleteBook' id='" + id.html() + "'>Delete</button>");
+                alert("Save book successfully!");
+			},
+			error: function() {
+				$('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error updating record').fadeIn().fadeOut(4000, function() {
+					$(this).remove();
+				});
+			}
+		});
 	});
 });
 </script>

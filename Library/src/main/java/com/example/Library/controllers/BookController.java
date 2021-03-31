@@ -24,9 +24,9 @@ public class BookController {
         return bookService.getActive();
     }
 
-    @GetMapping(value = "/search/{author}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Book> searchAuthor(@PathVariable String author) {
-        return bookService.findByAuthor(author);
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Book> searchKey(@RequestParam String key) {
+        return bookService.findBySearch(key);
     }
 
     @GetMapping("/deleteBook/{id}")

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -55,11 +55,10 @@
 <body>
 
 <h1 style="color:  #2e5764;">Library Management System</h1>
-
-<input type="hidden" id= "idUserLogin" value="84"/>
+<input type="hidden" id= "idUserLogin" th:value="${user.id}"/>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <input type="hidden" id= "id" th:value="${user.id}"/>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item active">

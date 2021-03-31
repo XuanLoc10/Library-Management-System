@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -48,25 +48,13 @@
 			margin: 2% 0;
 			text-align: center;
 			color: #0099ff;
-
 		}
-		.custab{
-			border: 1px solid #ccc;
-			padding: 5px;
-			margin: 5% 0;
-			box-shadow: 3px 3px 2px #ccc;
-			transition: 0.5s;
-			}
-		.custab:hover{
-			box-shadow: 3px 3px 0px transparent;
-			transition: 0.5s;
-			}
     </style>
 </head>
 <body>
 <h1 style="color:  #2e5764;">Library Management System</h1>
 
-<input type="hidden" id= "idUserLogin" value="84"/>
+<input type="hidden" id= "idUserLogin" th:value="${user.id}"/>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -110,7 +98,7 @@
 </table>
 </div>
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
     $.getJSON('book/ticket/borrowerId/'+  $("#idUserLogin").val(), function(json) {
     var tr=[];
     for (var i = 0; i < json.length; i++) {
@@ -118,19 +106,22 @@ $(document).ready(function() {
         tr.push('<td>' + json[i].id + '</td>');
         tr.push('<td>' + json[i].book.id + '</td>');
         tr.push('<td>' + json[i].book.title + '</td>');
-        tr.push('<td>' + json[i].borrowerDate + '</td>');
-        tr.push('<td>' + json[i].returnDate + '</td>');
-        tr.push('<td><button class=\'return\' id=' + json[i].id + '>Return</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
-        tr.push('</tr>');
-        }
 
+        tr.push('<td>' + json[i].borrowerDate + '</td>');
+        if (json[i].returnDate !== null) {
+            tr.push('<td>' + json[i].returnDate + '</td>');
+        } else{
+        tr.push('<td>' + '' + '</td>');
+        }
+        tr.push('<td><button class=\'return\' id=' + json[i].id + '>Return</button>&nbsp;&nbsp;<button class=\'deleteTicket\' id=' + json[i].id + '>Delete</button></td>');
+        tr.push('</tr>');
+    }
         $('#tbodyTicket').append($(tr.join('')));
         var table = $('#tbTicket').DataTable( {
         });
     });
-    
-    
-    $(document).delegate('.delete', 'click', function() {
+    //Ticket
+    $(document).delegate('.deleteTicket', 'click', function() {
         if (confirm('Do you really want to delete record?')) {
             var id = $(this).attr('id');
             var parent = $(this).parent().parent();
@@ -153,13 +144,14 @@ $(document).ready(function() {
         }
     });
     
-    
+    //Return Ticket
     $(document).delegate('.return', 'click', function() {
         var parent = $(this).parent().parent();
 
         var id = parent.children("td:nth-child(1)");
         var isbn = parent.children("td:nth-child(2)");
         var title = parent.children("td:nth-child(3)");
+       
         var borrowerDate = parent.children("td:nth-child(4)");
         var returnDate = parent.children("td:nth-child(5)");
 
@@ -167,20 +159,23 @@ $(document).ready(function() {
         
         isbn.html("<input type='text' id='txtISBN' value='" + isbn.html() + "' disabled/>");
         title.html("<input type='text' id='txtTitle' value='" + title.html() + "' disabled/>");
+       
         borrowerDate.html("<input type='text' id='txtBorrowerDate' value='" + borrowerDate.html() + "'disabled/>");
 
-        buttons.html("<button id='save'>Confirm</button>&nbsp;&nbsp;<button class='cancel' id='cancel'>Cannel</button>");
+        buttons.html("<button id='saveTicket'>Confirm</button>&nbsp;&nbsp;<button class='cancel' id='cancel'>Cannel</button>");
     });
     
     $(document).delegate('#cancel', 'click', function() {
         window.setTimeout(function(){location.reload()},1000);
 	});
 
-    $(document).delegate('#save', 'click', function() {
+    $(document).delegate('#saveTicket', 'click', function() {
         var parent = $(this).parent().parent();
         
         var id = parent.children("td:nth-child(1)");
         var bookId = parent.children("td:nth-child(2)");
+        var title = parent.children("td:nth-child(3)");
+
         var borrowerDate = parent.children("td:nth-child(4)");
         var returnDate = parent.children("td:nth-child(5)");
 
@@ -192,6 +187,7 @@ $(document).ready(function() {
             data: { 
                     id : id.html(), 
                     bookId: bookId.children("input[type=text]").val(),
+                    title: title.children("input[type=text]").val(),
                     borrowerId: $("#idUserLogin").val(),
                     borrowerDate: new Date(),
                     returnDate: new Date()
@@ -199,6 +195,7 @@ $(document).ready(function() {
             datatype: "json",
             success: function() {
                 bookId.html(bookId.children("input[type=text]").val());
+                title.html(title.children("input[type=text]").val());
                 borrowerDate.html(borrowerDate.children("input[type=text]").val());
                 returnDate.html(returnDate.children("input[type=text]").val());
                 
@@ -211,6 +208,7 @@ $(document).ready(function() {
             }
         });
 	});
+
 });
 </script>
 </body>

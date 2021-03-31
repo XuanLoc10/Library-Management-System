@@ -16,7 +16,15 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String Page(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			String username = auth.getName();
+			User user= userApi.findByUser(username);
+			model.addAttribute("user", user);
+			return "library/HomePage";
+		}
 		return "library/HomePage";
+
 	}
 
 	@GetMapping("/home")
@@ -47,6 +55,14 @@ public class HomeController {
 
 	@GetMapping("/ticket")
 	public String ticket(Model model) {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			String username = auth.getName();
+			User user= userApi.findByUser(username);
+			model.addAttribute("user", user);
+			return "library/Ticket";
+		}
 		return "library/Ticket";
 	}
 }

@@ -14,8 +14,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Long>  {
     @Query(value = "select b.* from Book b where b.status = true", nativeQuery = true)
     List<BookEntity> findByActive();
 
-    //KeySearch
-    @Query(value = "select b.* from Book b where b.author = :author", nativeQuery = true)
-    List<BookEntity> findByAuthor(String author);
+    @Query(value = " select b.* from Book b where b.status = true AND (b.id like %:key% OR b.author like %:key% OR b.title like %:key% OR b.publishing_year like %:key% OR b.description like %:key%)", nativeQuery = true)
+    List<BookEntity> findBySearch(String key);
 }
 

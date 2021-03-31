@@ -4,6 +4,7 @@ import com.example.Library.converter.BookConverter;
 import com.example.Library.entities.BookEntity;
 import com.example.Library.models.Book;
 import com.example.Library.repositories.BookRepository;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,6 @@ public class BookService {
     public List<Book> getAll() {
         return StreamSupport
                 .stream(bookRepository.findAll().spliterator(), false)
-                //.map(UserConverter::entity2Model)
                 .map((BookEntity entity) -> BookConverter.entity2Model(entity))
                 .collect(Collectors.toList());
     }
@@ -59,15 +59,20 @@ public class BookService {
     public List<Book> getActive() {
         return StreamSupport
                 .stream(bookRepository.findByActive().spliterator(), false)
-                //.map(BookConverter::entity2Model)
                 .map((BookEntity entity) -> BookConverter.entity2Model(entity))
                 .collect(Collectors.toList());
     }
 
-    public List<Book> findByAuthor(String author) {
+    public List<Book> findBySearch(String key) {
+        List<BookEntity> bookEntities = null;
+        if(StringUtils.isEmpty(key)){
+            bookEntities = bookRepository.findAll();
+        }
+        else {
+            bookEntities = bookRepository.findBySearch(key);
+        }
         return StreamSupport
-                .stream(bookRepository.findByAuthor(author).spliterator(), false)
-                //.map(UserConverter::entity2Model)
+                .stream(bookEntities.spliterator(), false)
                 .map((BookEntity entity) -> BookConverter.entity2Model(entity))
                 .collect(Collectors.toList());
     }
